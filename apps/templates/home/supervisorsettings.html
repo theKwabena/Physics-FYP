@@ -1,0 +1,208 @@
+{% extends "layouts/supervbase.html" %}
+
+{% block title %} Proifle Settings {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    
+    <div class="row mt-6">
+        <div class="col-12 col-xl-8">
+            <div class="card card-body border-0 shadow mb-4">
+                <h2 class="h5 mb-4">General information ({{request.user.supervisor.rank|title}} {{request.user.supervisor.first_name}} {{request.user.supervisor.other_names}})</h2>
+                <form method="POST" enctype="multipart/form-data"">
+                    {% csrf_token %}
+                    <span class="text-error text-danger fw-bolder">{{ form.email.errors }}</span>
+                            <span class="text-error text-danger fw-bolder">{{ form.first_name.errors}}</span>
+                            <span class="text-error text-danger fw-bolder">{{ form.other_names.errors}}</span>
+                            <span class="text-error text-danger fw-bolder">{{ form.password1.errors}}</span>
+                            <span class="text-error text-danger fw-bolder">{{ form.password2.errors}}</span>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div>
+                                
+                                <label for="first_name">First Name</label>
+                                {{form.first_name}}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div>
+                                <label for="last_name">Last Name</label>
+                                {{form.other_names}}
+                                <!-- <input name = 'sname' class="form-control" id="last_name" type="text" placeholder="Also your last name"   value="{{ request.user.supervisor.other_names }}"required> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <!-- <div class="col-md-6 mb-3">
+                            <label for="birthday">Birthday</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                                </span>
+                                <input data-datepicker="" class="form-control" id="birthday" type="text" placeholder="dd/mm/yyyy" required>                                               
+                              </div>
+                        </div> -->
+                        <div class="col-md-6 mb-3">
+                            <label for="gender">Title</label>
+                            <select class="form-select mb-0" id="gender" aria-label="Gender select example" name = 'rank'>
+                                {% if request.user.supervisor.rank|title == 'Dr' %}
+                                <option value ="{{request.user.supervisor.rank}}">{{request.user.supervisor.rank|title}}</option>
+                                <option value="Prof"> Prof </option>
+                                    <option value="Mr">Mr</option>
+                                {% elif  request.user.supervisor.rank|title == 'Mr' %}
+                                <option value ="{{request.user.supervisor.rank}}">{{request.user.supervisor.rank|title}}</option>                         
+                                <option value="Prof"> Prof </option>
+                                    <option value="Dr">Dr</option>
+                                {% elif request.user.supervisor.rank|title == 'Prof' %}
+                                <option value ="{{request.user.supervisor.rank}}">{{request.user.supervisor.rank|title}}</option>                         
+                                <option value="Dr">Dr</option>
+                                <option value="Mr">Mr</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="email">Role</label>
+                                <input class="form-control"  value="{{ request.user.supervisor.role }}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input class="form-control"  value="{{ request.user.email }}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3"> 
+                            <div class="form-group">
+                                <label for="phone">Username</label>
+                                <input class="form-control" id="phone"  value="{{ request.user.username }}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="profile picture">Profile Picture</label>
+                                {{form.supervisorimg}}
+                            </div>
+                    </div>   
+                    </div>     
+                  
+                    <button type="Submit " class="btn btn-gray-800 ">Save Profile</button>
+                      
+                </form>
+            </div>
+          
+        </div>
+        <div class="col-12 col-xl-4">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card shadow border-0 text-center p-0">
+                        <div class="profile-cover rounded-top" data-background="{{ ASSETS_ROOT }}/img/profile-cover.jpg"></div>
+                        <div class="card-body pb-3">
+                            <img src="{{user.supervisorimg.url}}" class="avatar-xl rounded-circle mx-auto mt-n7 mb-4" alt="Neil Portrait">
+                           
+                            <h5 class="fw-normal mb-0">
+                                
+                                <!-- <input name="images" onchange="readURL(this);" type="file" accept="image/*"/> -->
+                                {{ user.rank|title}}  {{ user.first_name}} {{ user.other_names}}
+                                {% if user.verified == True %}
+                                <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" clip-rule="evenodd"/></svg>
+                            {% else %} <span class = "text-small text-danger" style = 'font-size:12px;'>unverified</span> {% endif %}
+                            </h5>
+                            <p class="text-gray mb-0">
+                                {{ user.indexNo }}
+                            </p>
+                            <p class="text-gray mb-0">
+                                {{ user.email }} 
+                            </p>
+                            <hr>
+                            {% if not user.verified == True %}
+                            <!-- <button class="btn btn-gray-800" id="basicAlert">Update Project </button> -->
+                            
+                            <a href = "{% url 'sendsupervVerify' %}" class = "text-gray mb-0 sethov" id="basicAlert">Verify Account</a> <hr>{% endif %} 
+                            <a  class="text-gray mb-0 sethov" href="#" data-bs-toggle="modal" data-bs-target="#modal-default{{user.id}}"><span></span>Change Email</a>
+                            <hr>
+                            <a href = "{% url 'change-password' %}" class="text-gray mb-0 sethov"> Change Password </a>
+                            <hr>
+                            <a href = "#" data-bs-toggle="modal" data-bs-target="#modal-supervisor" class="text-gray mb-0 sethov"> Delete Account </a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modal-default{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="h6 modal-title">Confirm Email Change</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="text-align: center;">
+                            <p class='lead'> Are you sure you want to  <span class="text-danger"> change </span> your current email: <b>{{user.email}}?</b>  </p>
+                            <p>This action is not reversible. If you proceed, your account will be marked as <b> unverified and you'll lose access to certain pages of your dashboard till you verify your new email. </b> Your account will be marked as verified after verifying your new email, All notifications however will be sent to your current email till you verify your new email</p>
+    
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'verifysupervisor' %}"> <button type="button" class="btn btn-danger">Proceed</button> </a>
+                            <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="modal fade" id="modal-supervisor" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="h6 modal-title">Confirm Account Delete</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="text-align: center;">
+                            <p class='lead'> Are you sure you want to  <span class="text-danger"> delete </span> your account?  </p>
+    
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'delete-account' %}"> <button type="button" class="btn btn-danger">Confirm Delete</button> </a>
+                            <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    {{user.email|json_script:"user-email" }}
+    
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+    const userEmail = JSON.parse(document.getElementById('user-email').textContent);
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-gray'
+        },
+        buttonsStyling: false
+    });
+
+    document.getElementById('basicAlert').addEventListener('click', function() {
+        swalWithBootstrapButtons.fire(
+            'Verification Email Sent',
+            'Verification email sent to ' + userEmail + ', please check your email'
+        )
+    });
+</script>
+
+
+{% endblock javascripts %}

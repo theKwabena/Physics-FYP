@@ -1,0 +1,330 @@
+{% extends "layouts/base.html" %} {% block title %} Search {% endblock title %}
+
+
+{% block content %}
+
+{% if searched %}
+<p class = "my-3 mx-4 fw-bold" style = "font-size : 30px">  You searched for <b class = "text-danger"> {{searched}} </b></p>
+
+{% else %}
+
+<h1 class = "mt-5"> Type a word and send enter </h1>
+
+{% endif %}
+
+{% if projects %}
+<p class = "h4 mx-4 mt-4">Projects </p>
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <!-- <th class="border-gray-200">#</th> -->
+                <th class="border-gray-200">Project Topic</th>
+                <th class="border-gray-200">Specialization</th>
+                <th class="border-gray-200">Supervisor</th>
+                <th class="border-gray-200">Status</th>
+                <th class="border-gray-200">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Item -->
+            
+            <tr>
+                {% for project in projects %}
+                <!-- <td>
+                    <a href="#" class="fw-bold">
+                          {{i.id}}
+                      </a>
+                </td> -->
+                <td class="fw-bolder text-gray-500" scope="row">
+                    <a href="{% url 'projectinfo' project.id %}">
+                        <p class="fw-bolder text-gray-500">{{ project.title|slice:":31" }} </p>
+
+                        <p style="margin-top: -5%;" class="fw-bolder text-gray-500"> {{ project.title|slice:"32:60"}}{% if project.title|length > 60 %}...{% else %} {% endif%}
+                        </p>
+                    </a>
+
+                </td>
+                <td class="fw-bolder text-gray-500">
+                    {{ project.specialization }}
+                </td>
+                <td class="fw-bolder text-gray-500">
+                    <p> {{ project.supervisor.first_name }} </p>
+                    <p style="margin-top: -25px;"> {{project.supervisor.other_names}}</p>
+                </td>
+                {% if project.approved == True %}
+                <td><span class="fw-bold text-success"> Approved</span></td>
+                {% else %}
+                <td><span class="fw-bold text-danger">Pending Approval</span></td>
+                {% endif %}
+
+
+                <td>
+                    <div class="btn-group">
+                        <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="icon icon-sm">
+                                  <span class="fas fa-ellipsis-h icon-dark"></span>
+                <svg class="icon icon-s me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M384 32C419.3 32 448 60.65 448 96V416C448 451.3 419.3 480 384 480H64C28.65 480 0 451.3 0 416V96C0 60.65 28.65 32 64 32H384zM224 288C241.7 288 256 273.7 256 256C256 238.3 241.7 224 224 224C206.3 224 192 238.3 192 256C192 273.7 206.3 288 224 288zM224 128C206.3 128 192 142.3 192 160C192 177.7 206.3 192 224 192C241.7 192 256 177.7 256 160C256 142.3 241.7 128 224 128zM224 384C241.7 384 256 369.7 256 352C256 334.3 241.7 320 224 320C206.3 320 192 334.3 192 352C192 369.7 206.3 384 224 384z"/></svg>
+                              </span>
+                          </button>
+                        <div class="dropdown-menu py-0">
+                            <a class="dropdown-item rounded-top" href="{% url 'projectinfo' project.id %}"><span class="fas fa-eye me-2"></span>View Details</a>
+                            <a class="dropdown-item" href="{% url 'codeditproject' project.id %}"><span class="fas fa-edit me-2"></span>Edit</a>
+                            <a class="dropdown-item text-danger rounded-bottom" href="#" data-bs-toggle="modal" data-bs-target="#modal-default{{project.id}}"><span class="fas fa-trash-alt me-2"></span>Delete</a>
+                            <!-- <small type="button" style="color: red;" data-bs-toggle="modal" data-bs-target="#modal-default">Remove From Project</small> -->
+                        </div>
+                    </div>
+                </td>
+                <div class="modal fade" id="modal-default{{project.id}}" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="h6 modal-title">Confirm Project Delete </h2>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="text-align: center;">
+                                <p class='lead'> Are you sure you want to  <span class="text-danger">delete </span> <b>{{project.title}}</b> by <span class="text-danger"> {{project.supervisor.first_name}} {{project.supervisor.other_names}}</span> </p>
+                                <p>All students enrolled in this project will be able to select other projects, All files related to this project will be deleted. This action cannot be reversed</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{% url 'deleteproject' project.id %}"> <button type="button" class="btn btn-danger">Delete</button> </a>
+                                <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% if students %}
+<p class = "h4 mx-4 mt-4"> Students </p>
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <!-- <th class="border-gray-200">#</th> -->
+                <th class="border-gray-200">Student Name </th>
+                <th class="border-gray-200">Index Number </th>
+                <th class="border-gray-200">Selected Topic </th>
+                <th class="border-gray-200">Status </th>
+                <!-- <th class="border-gray-200">Project Group</th> -->
+                <th class="border-gray-200">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- <span class="fw-normal mb-5 " style="text-align: center;"> Date Uploaded <b>{{file.date_uploaded}} </b></span> -->
+            {% if students.paginator.count == 0 %}
+                                <tr style = 'border: 1px solid white'> 
+                                    <td class = "align-items-center">
+                                <p> No student match the search query </p>
+                            </td>
+                            </tr>
+                                {% else %}
+                {% for i in students %}
+                <td>
+                   <a  href="{% url 'codstudentdetails' i.id %}"> <span class="fw-normal sethov">{{i.first_name}} {{i.last_name}}</span> </a>
+                </td>
+                <td><span class="fw-normal">{{i.indexNo}}</span></td>
+                
+                {%if i.project is None %}
+                <td><span class="fw-normal">No project topic selected</span>
+                {% elif i.project is not None %}
+                <td><span class="fw-normal">
+                    
+                    <p class="fw-normal">{{ i.project.title|slice:":31" }} </p>
+
+                        <p style="margin-top: -25px;" class="fw-normal"> {{ i.project.title|slice:"32:60"}}{% if i.project.title|length > 60 %}...{% else %} {% endif%}
+                        </p>
+                    
+                    </span></td> {% endif %}
+                    {% if i.project is None %}
+                    <td><span class="fw-bold"> No project selected </span></td>
+                    {% elif i.project is not None and i.approved == False %}
+                    <td><span class="fw-bold text-danger">
+                        
+                        
+                        <p class="fw-normal">Project enrollment </p>
+
+                        <p style="margin-top: -25px;" class="fw-normal"> pending approval
+                        </p>
+                    </span></td>
+                {% elif i.project is not None and i.approved == True %}
+                <td><span class="fw-bold text-success"> Approved</span></td>
+                {% endif %}
+
+                <td>
+                    <div class="btn-group">
+                        <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="icon icon-sm">
+                                  <span class="fas fa-ellipsis-h icon-dark"></span>
+                <svg class="icon icon-s me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M384 32C419.3 32 448 60.65 448 96V416C448 451.3 419.3 480 384 480H64C28.65 480 0 451.3 0 416V96C0 60.65 28.65 32 64 32H384zM224 288C241.7 288 256 273.7 256 256C256 238.3 241.7 224 224 224C206.3 224 192 238.3 192 256C192 273.7 206.3 288 224 288zM224 128C206.3 128 192 142.3 192 160C192 177.7 206.3 192 224 192C241.7 192 256 177.7 256 160C256 142.3 241.7 128 224 128zM224 384C241.7 384 256 369.7 256 352C256 334.3 241.7 320 224 320C206.3 320 192 334.3 192 352C192 369.7 206.3 384 224 384z"/></svg>
+                              </span>
+                          </button>
+                        <div class="dropdown-menu py-0">
+                            <a class="dropdown-item rounded-top" href="{% url 'codstudentdetails' i.id %}"><span class="fas fa-eye me-2"></span>View Details</a>
+                            <!-- <a class="dropdown-item" href="#"><span class="fas fa-edit me-2"></span></a> -->
+                            <a class="dropdown-item text-danger rounded-bottom" data-bs-toggle="modal" data-bs-target="#modal-default{{i.id}}" href="#"><span class="fas fa-trash-alt me-2"></span>Delete Student From Portal</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <div class="modal fade" id="modal-default{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="h6 modal-title">Confirm Deletion From Portal </h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="text-align: center;">
+                            <p class='lead'> Are you sure you want to <span class = 'text-danger' >delete   </span> <b>{{i.first_name}} {{i.last_name}} </b>from Physics FYP Protal? </p>
+                            <p>User data will be <span class = 'text-danger' >deleted </span>and user <span class = " text-danger">won't be able to login </span>with user data associated with this account</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'supdeletestudentfromproject' i.id %}"> <button type="button" class="btn btn-secondary">Remove</button> </a>
+                            <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <!-- Item -->
+
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+
+{% if supervisors %}
+<p class = "h4 mx-4 mt-4"> Supervisors </p>
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <!-- <th class="border-gray-200">#</th> -->
+                <th class="border-gray-200">Supervisor Name </th>
+                <th class="border-gray-200">Supervisor Email </th>
+                <th class="border-gray-200">Details</th>
+                
+                <!-- <th class="border-gray-200">Selected Topic </th> -->
+                <!-- <th class="border-gray-200">Status </th> -->
+                <!-- <th class="border-gray-200">Project Group</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- <span class="fw-normal mb-5 " style="text-align: center;"> Date Uploaded <b>{{file.date_uploaded}} </b></span> -->
+            {% if supervisors.paginator.count == 0 %}
+                                <tr style = 'border: 1px solid white'> 
+                                    <td class = "align-items-center">
+                                <p> No student match the search query </p>
+                            </td>
+                            </tr>
+                                {% else %}
+                {% for i in supervisors %}
+                <td>
+                   <a  href="{% url 'supervisordetails' i.id %}"> <span class="fw-bold">{{i.first_name}} {{i.other_names}}</span> </a>
+                </td>
+                <td><span class="fw-normal">{{i.email}}</span></td>
+                <td> <a href="{% url 'supervisordetails' i.id %}"> <span class="fw-norma"> View </span></a> </td>
+ 
+            </tr>
+           
+            {% endfor %}
+            {% endif %}
+            <!-- Item -->
+
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+
+{% if events %}
+<p class = "h4 mx-4 mt-4"> Events </p>
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <!-- <th class="border-gray-200">#</th> -->
+                <th class="border-gray-200">Event Name</th>
+                <th class="border-gray-200">Date</th>
+                <th class="border-gray-200">Delete</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Item -->
+            
+            <tr>
+                {% for event in events %}
+                <!-- <td>
+                    <a href="#" class="fw-bold">
+                          {{i.id}}
+                      </a>
+                </td> -->
+                <td class="fw-bolder text-gray-500" scope="row">
+                        <p class="fw-bolder text-gray-500">{{ event.name }} </p>
+
+
+                </td>
+                <td class="fw-bolder text-gray-500">
+                    {{ event.date }}
+                </td>
+               
+                <td>
+                    <a href = "{% url 'edit_event' event.id %}" class = 'text-success'> Edit Event </a> |  <a href = "{% url 'deleteevent' event.id %}" class = 'text-danger'> Delete </a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+    
+</div>
+{% endif %}
+
+{% if not project and not events and not supervisors and not students and not pitchedTopics %}
+
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <!-- <th class="border-gray-200">#</th> -->
+                <th class="border-gray-200">No results for search term <b>{{searched}} </b></th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Item -->
+            
+            <tr>
+           
+                <td class="fw-bolder text-gray-500" scope="row">
+                        <p class="fw-bolder text-gray-500">No search found in project, supervisors, events, students or pitched topics </p>
+                </td>
+                
+            </tr>
+
+        </tbody>
+    </table>
+    
+</div>
+
+{% endif %}
+
+{%endblock content%}
+

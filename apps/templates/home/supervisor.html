@@ -1,0 +1,369 @@
+{% extends "layouts/supervbase.html" %} {% block title %} Supervisor Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %} {% block content %}
+
+<div class="py-4">
+    <div class="dropdown">
+        <button class="btn btn-gray-800 d-inline-flex align-items-center me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                New
+            </button>
+        <div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-1">
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'supaddproject' %}">
+                <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path></svg>                Project Topic
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'alltasks' %}">
+                <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>                Task
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'projectfiles' %}">
+                <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path><path d="M9 13h2v5a1 1 0 11-2 0v-5z"></path></svg>                Project Files
+            </a>
+            <!-- <div role="separator" class="dropdown-divider my-1"></div> -->
+        </div>
+    </div>
+</div>
+<div class="row">
+   
+    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-primary rounded me-4 me-sm-0">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+                        </div>
+                        <div class="d-sm-none">
+                            <h2 class="h5">My Topics</h2>
+                            <h3 class="fw-extrabold mb-1">{{projects.count}}</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-7 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0">My Topics</h2>
+                            <h3 class="fw-extrabold mb-2">{{projects.count}}</h3>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-secondary rounded me-4 me-sm-0">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        <div class="d-sm-none">
+                            <h2 class="fw-extrabold h5">Selected Topics</h2>
+                            <h3 class="mb-1">{{selected.count}}</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-7 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0">Selected Topics</h2>
+                            <h3 class="fw-extrabold mb-2">{{selected.count}}</h3>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-tertiary rounded me-4 me-sm-0">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        <div class="d-sm-none">
+                            <h2 class="fw-extrabold h5"> Students Under Me</h2>
+                            <h3 class="mb-1">{{students.count}}</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-7 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0">Students Under ME </h2>
+                            <h3 class="fw-extrabold mb-2">{{students.count}}</h3>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-xl-8">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="fs-5 fw-bold mb-0">My Enrollments </h2>
+                            </div>
+                            {% if not enrollments.count == 0 %}
+                            <div class="col text-end">
+                                <a href="{% url 'supervisorall' %}" class="btn btn-sm btn-primary">See all</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead">
+                                <tr>
+                                    <th class="border-bottom" scope="col">Student Name</th>
+                                    <th class="border-bottom" scope="col">Topic Selected</th>
+                                    <th class="border-bottom" scope="col">Status</th>
+                                    <th class="border-bottom" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody> 
+                                {% if enrollments.count == 0 %}
+                                <tr style = 'border: 1px solid white'> 
+                                    <td class = "align-items-center">
+                                <p> You have no new enrollments </p>
+                            </td>
+                            </tr>
+                                {% else %}
+                                
+                                {% for stud in students %} {% if stud.approved == False %}
+                                <tr>
+                                    <th class="text-gray-900" scope="row">
+                                        {{stud.first_name}} {{stud.last_name}}
+                                    </th>
+                                    <td class="fw-bolder text-gray-500">
+                                        <p class="fw-bolder text-gray-500">{{ stud.project.title|slice:":31" }} </p>
+
+                                        <p style="margin-top: -7%;" class="fw-bolder text-gray-500"> {{ stud.project.title|slice:"32:60"}}{% if project.title|length > 60 %}...{% else %} {% endif%}
+                                        </p>
+                                    </td>
+                                    {% if stud.approved == True %}
+                                    <td><span class="fw-bold"> Approved</span></td>
+                                    {% else %}
+                                    <td><span class="fw-bold text-danger">Pending Approval</span></td>
+                                    {% endif %}
+
+                                    <td class="fw-bolder text-gray-500">
+                                        <div style="margin-bottom: 4%;"> <a href="{% url 'supervisoraccept' stud.id %}"><button class="btn btn-outline-success" type="button">Accept</button> </a></div>
+                                        <div> <a href="{% url 'supervisordecline' stud.id %}"><button class="btn btn-outline-danger" type="button">Decline</button> </a></div>
+                                    </td>
+
+
+                                </tr>
+                                {% endif %} {% endfor %} {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-xxl-6 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                        <h2 class="fs-5 fw-bold mb-0">My Projects</h2>
+                        {% if not projects.count == 0 %}
+                        <a href="{% url 'supervisorall' %}" class="btn btn-sm btn-primary">See All</a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <!-- Project 1 -->
+                        {% if students.count == 0 %}
+                        <p> You have uploaded no projects yet </p> {% else %}
+
+
+
+                            {% for myp in projects|slice:":5" %}
+                            <a href="{% url 'supprojectinfo' myp.id %}" "> <div class="row mb-4 ">
+                                <div class="col-auto ">
+                                    <svg class="icon icon-sm text-gray-500 " fill="currentColor " viewBox="0 0 20 20 " xmlns="http://www.w3.org/2000/svg "><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z "></path><path fill-rule="evenodd " d="M4 5a2 2 0 012-2
+                                3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z
+                                " clip-rule="evenodd "></path></svg>
+                                </div>
+                                <div class="col ">
+                                    <div class="progress-wrapper ">
+                                        <div class="progress-info ">
+                                            <div class="h6 mb-0 "> {{myp.title}}</div>
+                                            <!-- <div class="small fw-bold text-gray-500 "><span>75 %</span></div> -->
+                                        </div>
+                                        <hr>
+                                       
+                                    </div>
+                                </div>
+                            </div> </a>
+                            {% endfor %} {% endif %}
+
+                       
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="col-12 col-xxl-6 mb-4 ">
+                <div class="card border-0 shadow ">
+                    <div class="card-header border-bottom d-flex align-items-center justify-content-between ">
+                        <h2 class="fs-5 fw-bold mb-0 ">Students Under Me</h2>
+                        {% if not students.count == 0 %}
+                        <a href="{% url 'studentsunderme' %}" class="btn btn-sm btn-primary ">See all</a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body ">
+                        <ul class="list-group list-group-flush list my--3 ">
+                            {% if students.count == 0 %}
+                            <p> You have no students under your supervision </p> {% else %} {% for stud in students %} {% if stud.approved == True %}
+                            <li class="list-group-item px-0 ">
+                                <div class="row align-items-center ">
+                                    <div class="col-auto ">
+                                        <!-- Avatar -->
+                                        <a href="# " class="avatar ">
+                                            <img class="rounded " alt="Image placeholder " src="{{stud.studentimg.url}} ">
+                                        </a>
+                                    </div>
+                                    <div class="col-auto ms--2 ">
+                                        <h4 class="h6 mb-0 ">
+                                            <a href="# ">{{stud.first_name}} {{stud.last_name}}</a>
+                                        </h4>
+                                    </div>
+                                    
+                                </div>
+                            </li>
+                            {% endif %} {% endfor %} {% endif %}
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="col-12 col-xl-4 ">
+        
+        <div class="col-12 px-0 mb-4 ">
+            <div class="card border-0 shadow ">
+                <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                    
+                        <h2 class="fs-5 fw-bold mb-0">Tasks</h2>
+                        <a href="{% url 'alltasks' %}" class="btn btn-sm btn-primary text-end">See All</a>
+                        
+                        <!-- <div class="h5 fw-normal text-gray ">Tasks </div> -->
+
+                    
+                </div>
+                {% if tasks.count == 0 %}
+                <p class ="mx-5 mt-3"> There are no tasks</p> {% else %}
+                {% for task in tasks %}
+                <span href="# " class="list-group-item list-group-item-action border-bottom ">
+                    <div class="row align-items-center ">
+                        <div class="col ps-0 m-2 ">
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div>
+                                    <h4 class="h6 mb-0 text-small ">{{task.name}} {%if task.completed == True %} <span class = 'font-small text-success'> Completed </span> {% else %} <span class = 'font-small text-danger'>Not Completed</span> {% endif %}</h4>
+                                </div>
+                                <div class="text-end">
+                                    <small>{{task.date_created.date}}</small>
+                                </div>
+                            </div>
+                            <p class="font-small mb-0 ">{{task.project}}</p>
+                            {% if task.completed == True %}
+                            <span class="font-small"><a href = "{% url 'deletetask' task.id %}" class = "sethov"> Delete Task  </a></span></td>
+                            {% else %}
+                            <span class="font-small"> <a href = "{% url 'marktaskcomplete' task.id %}" class = "sethov">Mark as Complete  </a> | <a href = "{% url 'deletetask' task.id %}" class = "sethov"> Delete Task  </a></span></td>
+                            {% endif %}
+                        </div>
+                    </div>
+                </span>
+                {% endfor %} {% endif %}
+            </div>
+        </div>
+        <div class="col-12 px-0 mb-4 ">
+            <div class="card border-0 shadow ">
+                <div class="card-body ">
+                    <div class="d-flex align-items-center justify-content-between border-bottom pb-3 ">
+                        <div>
+                            <div class="h6 mb-0 d-flex align-items-center ">
+                                <svg class="icon icon-xs text-gray-500 me-2 " fill="currentColor " viewBox="0 0 20 20 " xmlns="http://www.w3.org/2000/svg "><path fill-rule="evenodd " d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512
+                                5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z " clip-rule="evenodd "></path></svg>                                Upcoming Events
+                            </div>
+                        </div>
+
+                    </div>
+                    {% if events.count == 0 %}
+                    <p class = "mt-2"> There are no upcoming events</p>
+                    {% else %}
+                    {% for event in events %}
+                    <div class="d-flex align-items-center justify-content-between border-bottom py-3 ">
+                        <div>
+                            <div class="h6 mb-0 d-flex align-items-center ">
+                                <svg class="icon icon-xs text-gray-500 me-2 " fill="currentColor " viewBox="0 0 20 20 " xmlns="http://www.w3.org/2000/svg "><path fill-rule="evenodd " d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116
+                                13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z " clip-rule="evenodd "></path></svg>                                {{event.name}}
+                            </div>
+                            <div class="small card-stats ">
+                                {{event.date|date:"l "}}, {{event.date}}
+                                <!-- <svg class="icon icon-xs text-success " fill="currentColor " viewBox="0 0 20 20 " xmlns="http://www.w3.org/2000/svg "><path fill-rule="evenodd " d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1
+                                1 0 011.414 0l4 4a1 1 0 010 1.414z " clip-rule="evenodd "></path></svg> -->
+                            </div>
+                        </div>
+                        <div>
+                            <a href="# " class="d-flex align-items-center fw-bold ">
+                                    {{event.time}}
+                                    <!-- <svg class="icon icon-xs text-gray-500 ms-1 " fill="currentColor " viewBox="0 0 20 20 " xmlns="http://www.w3.org/2000/svg "><path fill-rule="evenodd " d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1
+                                0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0
+                                001.414 0l4-4z " clip-rule="evenodd "></path></svg> -->
+                                </a>
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-12 px-0 ">
+            <div class="card border-0 shadow ">
+                <div class="card-body ">
+                    <h2 class="fs-5 fw-bold mb-1 ">Acquisition</h2>
+                    <p>Tells you where your visitors originated from, such as search engines, social networks or website referrals.</p>
+                    <div class="d-block ">
+                        <div class="d-flex align-items-center me-5 ">
+                            <div class="icon-shape icon-sm icon-shape-danger rounded me-3 ">
+                                <svg fill="currentColor " viewBox="0 0 20 20 " xmlns="http://www.w3.org/2000/svg "><path fill-rule="evenodd " d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414
+                                15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z " clip-rule="evenodd "></path></svg>
+                            </div>
+                            <div class="d-block ">
+                                <label class="mb-0 ">Bounce Rate</label>
+                                <h4 class="mb-0 ">33.50%</h4>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center pt-3 ">
+                            <div class="icon-shape icon-sm icon-shape-purple rounded me-3 ">
+                                <svg fill="currentColor " viewBox="0 0 20 20 " xmlns="http://www.w3.org/2000/svg "><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14
+                                4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z "></path></svg>                                </div>
+                            <div class="d-block ">
+                                <label class="mb-0 ">Sessions</label>
+                                <h4 class="mb-0 ">9,567</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

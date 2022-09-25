@@ -1,0 +1,275 @@
+ {% extends 'base/baseskeleteon.html' %} {% include 'includes/scripts.html' %}
+
+<!-- CSS only -->
+{% block stylesheets %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+
+
+
+<style>
+    * {
+        font-size: 2.0rem;
+        outline: none;
+    }
+    
+    #superv {
+        background-color: #0e9302;
+        padding: 1%;
+        color: white;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    .small-img-group {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    
+    .small-img-col {
+        cursor: pointer;
+    }
+    
+    .small-img {
+        height: 10rem;
+        width: 10rem;
+        object-fit: cover;
+    }
+    
+    .sproduct select {
+        display: block;
+        padding: 5px 10px;
+    }
+    
+    .buy-btn {
+        background: black;
+        color: white;
+        opacity: 1;
+        transition: 0.3s all;
+        padding: 20px;
+    }
+    
+    .sel-btn {
+        background: black;
+        color: white;
+        opacity: 1;
+        transition: 0.3s all;
+        padding: 7px;
+        border-radius: 5px;
+    }
+    
+    body {
+        background: #eee;
+    }
+    
+    section {
+        margin-top: 6%;
+    }
+    
+    .heading{
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .heading::before{
+        content: '';
+        position: absolute;
+        top:50%; left:0;
+        transform: translateY(-50%);
+        width: 100%;
+        height:.01rem;
+        background: rgba(0,0,0,.1);
+        z-index: -1;
+    }
+    
+    .heading span{
+        font-size: 3rem;
+        padding:.5rem 2rem;
+        color: #303830;
+        background: #fff;
+        border:var(--border);
+    }
+    
+    .deal{
+        background:#ddd9d9;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap:1.5rem;
+    }
+    
+    .deal .content{
+        flex:1 1 42rem;
+    }
+    
+    .deal .image{
+        flex:1 1 42rem;
+    }
+    
+    .deal .image img{
+        width: 60%;
+        height: 60%;
+    }
+    
+    .deal .content h3{
+        color:var(--green);
+        font-size: 2.5rem;
+        padding-bottom: .5rem;
+    }
+    
+    .deal .content h1{
+        color:var(--black);
+        font-size: 4rem;
+    }
+    
+    .deal .content p{
+        padding:1rem 0;
+        color:var(--light-color);
+        font-size: 1.4rem;
+        line-height: 2;
+    }
+</style>
+{% endblock stylesheets %} {% block content %}
+
+
+
+<section class="container sproduct mt-7 pt-5">
+    <div class="row mt-5">
+        <div class="col-lg-5 col-md-12 col-12">
+            <img class="img-fluid w-100 pb-1" src="{{object.projectimg.url}}" id="mainimg" alt="">
+            <div class="small-img-group">
+
+                {% if object.projectimg3.exists %}
+                <div class="small-img-col">
+                    <img src="{{object.projectimg.url}}" alt="" width="100%" class="small-img" alt="">
+                </div>
+                <div class="small-img-group">
+                    <div class="small-img-col">
+                        <img src="{{object.projectimg3.url}}" alt="" width="100%" class="small-img" alt="">
+                    </div>
+                    {% endif %} {% if object.projectimg2.exists %}
+                    <div class="small-img-col">
+                        <img src="{{object.projectimg.url}}" alt="" width="100%" class="small-img" alt="">
+                    </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12 col-12">
+                <h6> Home/projects/{{object.title}}</h6>
+                <h1 class="py-4"> {{object.title}}</h1>
+                <h1 id='superv' class="mt-1 mb-0"> Supervisor : {{object.supervisor.first_name}} {{object.supervisor.other_names}}
+                    <h1/>
+
+                    <span>Specialization - {{object.specialization}} </span>
+                    <h4 class="mt-4 mb-2"> </h4>
+                    <div>{{object.description}}</div>
+                    
+                    
+                    {% if object.occupied %} <p style="color:red;"> Project group is full </p> 
+                    {% else %}
+                        {% for group in request.user.groups.all %} {% if request.user.is_authenticated and 'Student' in group.name and request.user.student.project is None and request.user.student.verified is False %}
+                        <h style="color:red;"> You need to add and verify your email address before you can select a project topic click <b> <a href = "{% url 'verifyemail' %}">HERE</a></b> to being the verification process</h> 
+                        {% elif request.user.is_authenticated and 'Student' in group.name and request.user.student.project is None and request.user.student.verified is True %}
+                        <button class='buy-btn mt-4' data-bs-toggle="modal" data-bs-target="#modal-default"> Select Project</button> </div>
+
+
+            {% elif request.user.is_authenticated and 'Student' in group.name and request.user.student.project is not None %}
+            <h style="color:red;"> You have already selected {{ request.user.student.project }} as your final year project, Go to your project <a href="{% url 'studentview' %}"> Dashboard </a> or see the project coordinator if you want to change your project topic </h>
+            {% endif %} {% endfor %} {% if request.user.is_authenticated is False %}
+            <a href="{% url 'studentupdate' object.id %}"> <button class='buy-btn mt-4'><i class="fa-solid fa-circle-check"></i> Select Project
+                
+            </button> </a>
+            {% endif %} {% endif %}
+
+
+
+
+
+            <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="border: none;" role="document ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="h4 modal-title">Confirm Project Enrollment </h2>
+                            <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close "></button>
+                        </div>
+                        <div class="modal-body" style="text-align: center;">
+                            <p class='py-0'> Are you sure you want to select <span class="text-danger">{{project.title}}</span> as your final year project?</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'studentupdate' object.id %}"><button class='sel-btn mt-4 btn-danger'> Confirm Selection</button> </a> </a>
+                            <!-- <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal ">Cancel</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+    </div>
+</section>
+
+
+
+<section class="features " id="Projects ">
+
+    <h1 class="heading"> <span>Related Projects</span> </h1>
+
+
+    <div class="box-container ">
+
+        {% for project in related|slice:"0:4 " %}
+        <a href="{% url 'projectdetail' project.id %} ">
+            <div class="box ">
+                <img src="{{project.projectimg.url}} " alt=" ">
+                <h3>{{project.title}} </h3>
+                {%for i in project.supervisor.all %}
+                <span id='sname'>  | {{i.name}} |</span> {% endfor %}
+
+                <p>{{project.description|slice:"0:10 "}}..</p>
+            </div>
+        </a>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+{% endblock content %}
+
+
+<!-- JavaScript Bundle with Popper -->
+
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js " integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa " crossorigin="anonymous "></script>
+
+
+<script>
+    var mainimg = document.getElementById("mainimg ");
+    var smallimg = document.getElementsByClassName("small-img ")
+
+    smallimg[0].onclick = function() {
+        mainimg.src = smallimg[0].src;
+    }
+
+    smallimg[1].onclick = function() {
+        mainimg.src = smallimg[1].src;
+    }
+    smallimg[2].onclick = function() {
+        mainimg.src = smallimg[2].src;
+    }
+</script>
+
+{% endblock javascripts%}

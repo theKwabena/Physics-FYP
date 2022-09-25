@@ -1,0 +1,172 @@
+{% extends 'base/baseskeleteon.html' %}
+{% load static %}
+{% block stylesheets %} <style>
+    .heading{
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    
+    .heading::before{
+        content: '';
+        position: absolute;
+        top:50%; left:0;
+        transform: translateY(-50%);
+        width: 100%;
+        height:.01rem;
+        background: rgba(0,0,0,.1);
+        z-index: -1;
+    }
+    
+    .heading span{
+        font-size: 3rem;
+        padding:.5rem 2rem;
+        color: #303830;
+        background: #fff;
+        border:var(--border);
+    }
+    
+    .deal{
+        background:#edeaea;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap:0rem;
+        box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
+        0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+    }
+    
+    .deal .content{
+        flex:0 1 40rem;
+        margin-left:120px;
+        
+    }
+    
+    .deal .image{
+        flex:0.4 0 40rem;
+        margin-left: 50px;
+    }
+    
+    .deal .image img{
+        width: 50%;
+        height: 50%;
+    }
+    
+    .deal .content h3{
+        color:var(--green);
+        font-size: 2.5rem;
+        padding-bottom: 0px;
+    }
+    
+    .deal .content h1{
+        color:var(--black);
+        font-size: 4rem;
+        line-height: 1;
+    }
+    
+    .deal .content p{
+        padding:1rem 0;
+        color:var(--light-color);
+        font-size: 1.4rem;
+        line-height: 2;
+    }
+    
+    .projectsearchbox{
+        font-size: 3rem;
+        padding: 0.5rem 2rem;
+        color: #303830;
+        background: #fff;
+        border: var(--border);
+        width: 1200px;
+        
+    }
+    .projectsearchmain{
+        display: flex;
+        justify-content: center;
+    }
+    
+    form input{
+        height: 50px;
+        width:300px;
+        text-align: center;
+        border-radius: 20px;
+        margin:12px;
+        border: 1px solid   rgba(0,0,0,.1);
+    }
+    
+    form select{
+        width: 250px;
+        height: 50px;
+        text-align: center;
+        border-radius: 10px;
+        margin:12px;
+        border: 1px solid   rgba(0,0,0,.1);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
+        background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */
+        
+    }
+    
+</style> {% endblock stylesheets %}
+{% block content %}
+
+
+<div  class = "heading" style = "margin-top:120px; margin-bottom: 50px;">
+    <form method = 'GET'>
+            <div class="projectsearchmain">
+                  
+                <div class = "projectsearchbox">{{searchSupervisor.form.first_name}} {{searchSupervisor.form.other_names}}
+                  <button class = 'btn btn-primary' type = 'submit'>Search</button> </div>
+                  
+            </div>
+        </form> 
+    </div>
+
+
+<section class="features" id="Specialization" style = 'margin-top:20px; margin-bottom:50px'>
+
+
+    <div class="box-container">
+        {% for supervisor in supervisors %}
+        
+        
+        <a href = "{% url 'supervisorProjects' supervisor.first_name supervisor.other_names %}">   
+        <div class="box">
+            <img src="{{supervisor.supervisorimg.url}}" alt="">
+            <h3> {{supervisor.rank|title}} {{supervisor.first_name}} {{supervisor.other_names}} </h3>
+
+            <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt, earum!</p> -->
+
+            <!-- <a href="#" class="btn">Find Projects</a> -->
+        </div>
+        </a>
+    
+        {% endfor %}
+
+
+    </div>
+
+</section>
+
+<section class="deal" style = 'margin-bottom:70px;'>
+
+    <div class="content">
+        <!-- <h3>Never been this easy</h3>  -->
+        <h1>Have an<br><span style = "color: #0e9302">IDEA</span> <br> for your final year project?</h1>
+        <p>Let project supervisors hear your idea</p>
+            <p style="margin-top:-30px;">pitch your project idea to project supervisors now</p>
+         <a href="{% url 'pitchprojecttopic' %}" class="btn">Pitch Idea</a>
+    </div>
+
+    <div class="image">
+        <img src="{% static 'base/image/idea.png' %}" alt="">
+    </div>
+
+</section>
+
+{% endblock content %}
+

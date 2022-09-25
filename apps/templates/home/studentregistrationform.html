@@ -1,0 +1,36 @@
+{% extends "home/studentskeleton.html" %} {% block title %} Registration {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+<style>
+    #hidden {
+        font-size: 20px;
+    }
+</style>
+{% block formit %}
+<div class="col">
+    <h2 class="fs-5 fw-bold mb-0"> Project Enrollment Form</h2>
+    <hr>
+</div>
+
+<h3 class="fs-6 fw-normal mb-0"> Title : <span class="fs-6 fw-bold mb-0"=> {{project.title}}</span></h3>
+<h3 class="fs-6 fw-normal mb-3"> Supervisor : <span class="fs-6 fw-bold mb-2"=> {{project.supervisor.first_name}} {{project.supervisor.other_names}}</span></h3>
+
+
+
+
+<form method="POST"> {% csrf_token %} {% if messages %}
+    <ul class='message'>
+        {% for message in messages %}
+        <li {% if message.tags %} class=" {{message.tags}} " {% endif %}> {{message}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} {{form.as_p}}
+
+    <input type="submit" value="Save" />
+</form>
+
+
+{% endblock formit %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

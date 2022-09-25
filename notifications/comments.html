@@ -1,0 +1,163 @@
+    #  channel_layer = get_channel_layer() 
+    #             await (channel_layer.group_send(
+    #             'general', 
+    #             {   
+    #             'type': 'send_all_notif',
+    #             #  'notiftype': 'Personal',
+    #             'sender' : send_user,
+    #             'senderimg': str(send_user.supervisor.supervisorimg.url),
+    #             'message': message,
+    #             'receiver': user,
+    #             'date' : 'Date',
+    #         }
+    #             ))
+            
+    #     await (self.mark_as_read(text_data))
+        
+
+    #     # Send message to room group
+    #     await self.channel_layer.group_send(
+    #         self.room_group_name, {"type": "chat_message", "message": message}
+    #     )
+
+    # Receive message from room group
+    # async def send_notification (self, event):
+    #     send_user = self.scope['user']  
+    #     all_users = await (self.get_users('All'))
+    #     all_supervisors = await(self.get_users('Supervisors'))
+    #     all_students = await(self.get_users('Students'))
+    #     notiftype = event['notiftype']
+    #     sender = event ['sender']
+    #     send_user = await (self.get_user(un_id = int(sender)))
+    #     senderimg = event['senderimg']
+    #     message = event['message']
+    #     receiver = event['receiver']
+    #     date = event['date']
+    #     print(sender)
+        
+           
+        
+        
+    #     if notiftype == 'All':
+    #         for user in all_users:
+    #             await self.save_gen_message(send_user,message,user.id)
+    #         await self.send(text_data=json.dumps({
+    #         'sender': sender,
+    #         'message' :message,
+    #         'date' : date,
+    #         'image' : senderimg,
+    #         'user' : username
+    #     }))
+    #     else:
+    #         pass
+            
+    #     if notiftype == 'Supervisors':
+    #         for user in all_supervisors:
+    #             await self.save_gen_message(send_user, message, user.id)
+    #         await self.send(text_data=json.dumps({
+    #         'sender': sender,
+    #         'message' :message,
+    #         'date' : date,
+    #         'image' : senderimg,
+    #         'user' : username
+    #     }))
+    #     else:
+    #         pass
+                
+    #     if notiftype == 'Supervisors':
+    #         for user in all_supervisors:
+    #             await self.save_gen_message(send_user, message, user.id)
+    #         await self.send(text_data=json.dumps({
+    #         'sender': sender,
+    #         'message' :message,
+    #         'date' : date,
+    #         'image' : senderimg,
+    #         'user' : username
+    #     }))
+    #     else:
+    #         pass
+                
+    #     if notiftype == 'Students':
+    #         for user in all_students:
+    #             await self.save_gen_message(send_user, message, user.id)
+    #         await self.send(text_data=json.dumps({
+    #         'sender': sender,
+    #         'message' :message,
+    #         'date' : date,
+    #         'image' : senderimg,
+    #         'user' : username
+    #     }))
+    #     else:
+    #         pass
+                
+    #     if notiftype == 'Personal':
+    #         name = 'Emma'
+            
+    #         await self.send(text_data=json.dumps({
+    #         'sender': sender,
+    #         'message' :message,
+    #         'date' : date,
+    #         'image' : senderimg,}))
+    #     else:
+    #         pass
+    
+    
+            
+    
+    # @database_sync_to_async  
+    # def get_all_users(self):  
+    #     return list(User.objects.all())
+    
+    
+    # @database_sync_to_async
+    # def get_all_supervisors(self):
+    #     return list(Supervisor.objects.all())
+    
+    
+    
+    # std = Student.objects.get(id=141)
+    # reciever = User.objects.get(username = std)
+    # userid = reciever.id
+    # channel_layer = get_channel_layer()
+    # async_to_sync(channel_layer.group_send)(
+    #     "general",
+    #     {   
+    #         'type': 'send_notifications',
+    #         'notiftype': 'All',
+    #         'sender' : str(request.user.id),
+    #         'senderimg': str(request.user.supervisor.supervisorimg.url),
+    #         'message': 'This is some message sending',
+    #         'receiver': str(userid),
+    #         'date' : str(dt.datetime.now()),
+    #     }
+        
+    # )
+    
+    # async_to_sync(channel_layer.group_send)(
+    #     'project_group' + '16',
+    #     {   
+    #         'type': 'send_notifications',
+    #         'notiftype': 'personal',
+    #         'sender' : str(request.user.id),
+    #         'senderimg': str(request.user.supervisor.supervisorimg.url),
+    #         'message': 'This is a personal notification to ' + str(std.first_name + ' '+ std.last_name),
+    #         'receiver': str(userid),
+    #         'date' : str(dt.datetime.now()),
+    #     }
+        
+    # )
+    
+    
+    
+    
+    # async_to_sync(channel_layer.group_send)(
+    #     "student" + str(std.id),
+    #     {   
+    #         'type': 'send_personal_notif',
+    #         'sender' : str(request.user.id),
+    #         'senderimg': str(request.user.supervisor.supervisorimg.url),
+    #         'message': 'This is a message to ' + str(std) + 'only',
+    #         'receiver': 'All',
+    #         'date' : str(dt.datetime.now()),
+    #     }
+    # )

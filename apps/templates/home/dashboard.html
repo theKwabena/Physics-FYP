@@ -1,0 +1,291 @@
+{% extends "layouts/base.html" %} {% block title %} Coordinator Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="py-4">
+    <div class="dropdown">
+        <button class="btn btn-gray-800 d-inline-flex align-items-center me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                New
+            </button>
+        <div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-1">
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'codaddproject' %}">
+                <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path></svg>                Project Topic
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'addspecialization' %}">
+                <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>               Specialization
+            </a>
+            
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'allevents' %}">
+                <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>               Event
+            </a>
+          
+            
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+
+    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-primary rounded me-4 me-sm-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 60.65 28.65 32 64 32H512C547.3 32 576 60.65 576 96V416C576 451.3 547.3 480 512 480H64C28.65 480 0 451.3 0 416V96zM160 256C160 238.3 145.7 224 128 224C110.3 224 96 238.3 96 256C96 273.7 110.3 288 128 288C145.7 288 160 273.7 160 256zM160 160C160 142.3 145.7 128 128 128C110.3 128 96 142.3 96 160C96 177.7 110.3 192 128 192C145.7 192 160 177.7 160 160zM160 352C160 334.3 145.7 320 128 320C110.3 320 96 334.3 96 352C96 369.7 110.3 384 128 384C145.7 384 160 369.7 160 352zM224 136C210.7 136 200 146.7 200 160C200 173.3 210.7 184 224 184H448C461.3 184 472 173.3 472 160C472 146.7 461.3 136 448 136H224zM224 232C210.7 232 200 242.7 200 256C200 269.3 210.7 280 224 280H448C461.3 280 472 269.3 472 256C472 242.7 461.3 232 448 232H224zM224 328C210.7 328 200 338.7 200 352C200 365.3 210.7 376 224 376H448C461.3 376 472 365.3 472 352C472 338.7 461.3 328 448 328H224z"/></svg>
+                        </div>
+                        <div class="d-sm-none">
+                            <h2 class="h5">Approved Topics </h2>
+                            <h3 class="fw-extrabold mb-1">{{projects.count}}</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-7 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0">Approved Topics</h2>
+                            <h3 class="fw-extrabold mb-2">{{projects.count}}</h3>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-secondary rounded me-4 me-sm-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M319.9 320c57.41 0 103.1-46.56 103.1-104c0-57.44-46.54-104-103.1-104c-57.41 0-103.1 46.56-103.1 104C215.9 273.4 262.5 320 319.9 320zM369.9 352H270.1C191.6 352 128 411.7 128 485.3C128 500.1 140.7 512 156.4 512h327.2C499.3 512 512 500.1 512 485.3C512 411.7 448.4 352 369.9 352zM512 160c44.18 0 80-35.82 80-80S556.2 0 512 0c-44.18 0-80 35.82-80 80S467.8 160 512 160zM183.9 216c0-5.449 .9824-10.63 1.609-15.91C174.6 194.1 162.6 192 149.9 192H88.08C39.44 192 0 233.8 0 285.3C0 295.6 7.887 304 17.62 304h199.5C196.7 280.2 183.9 249.7 183.9 216zM128 160c44.18 0 80-35.82 80-80S172.2 0 128 0C83.82 0 48 35.82 48 80S83.82 160 128 160zM551.9 192h-61.84c-12.8 0-24.88 3.037-35.86 8.24C454.8 205.5 455.8 210.6 455.8 216c0 33.71-12.78 64.21-33.16 88h199.7C632.1 304 640 295.6 640 285.3C640 233.8 600.6 192 551.9 192z"/></svg>
+                        </div>
+                        <div class="d-sm-none">
+                            <h2 class="fw-extrabold h5">Students with Topic</h2>
+                            <h3 class="mb-1">{{students.count}}/ {{allstudents.count}}</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-7 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0">Students with Topic</h2>
+                            <h3 class="fw-extrabold mb-2">{{students.count}}/{{allstudents.count}}</h3>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <div class="row d-block d-xl-flex align-items-center">
+                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-tertiary rounded me-4 me-sm-0">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd"<path d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM129.1 323.2l83.2 88.4c6.3 6.7 17 6.7 23.3 0l83.2-88.4c73.7 14.9 129.1 80 129.1 158.1c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-78.1 55.5-143.2 129.1-158.1z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        <div class="d-sm-none">
+                            <h2 class="fw-extrabold h5">Supervisors</h2>
+                            <h3 class="mb-1">{{supervisors.count}}</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-7 px-xl-0">
+                        <div class="d-none d-sm-block">
+                            <h2 class="h6 text-gray-400 mb-0"> Supervisors </h2>
+                            <h3 class="fw-extrabold mb-2">{{supervisors.count}}</h3>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12 col-xl-8">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="fs-5 fw-bold mb-0">Uploaded Topics</h2>
+                            </div>
+                            {% if not projects.count == 0%}
+                            <div class="col text-end">
+                                <a href="{% url 'allprojects' %}" class="btn btn-sm btn-primary">View All </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="border-bottom" scope="col">Project Topic</th>
+                                    <th class="border-bottom" scope="col">Specialization</th>
+                                    <th class="border-bottom" scope="col">Supervisor</th>
+                                    <th class="border-bottom" scope="col">Status</th>
+                                    <th class="border-bottom" scope="col">Approve/Decline</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if projects.count == 0 %}
+                                <tr style = 'border: 1px solid white'> 
+                                    <td class = "align-items-center">
+                                <p> You have no new enrollments </p>
+                            </td>
+                            </tr>
+                                {% else %}
+                                {% for project in projects|slice:":5" %}
+                                <tr>
+
+                                    <td class="fw-bolder text-gray-500" scope="row">
+                                        <a href="{% url 'projectinfo' project.id %}">
+                                            <p class="fw-bolder text-gray-500 sethov ">{{ project.title|slice:":31" }} </p>
+
+                                            <p style="margin-top: -7%;" class="fw-bolder text-gray-500 sethov"> {{ project.title|slice:"32:60"}}{% if project.title|length > 60 %}...{% else %} {% endif%}
+                                            </p> 
+                                        </a>
+
+                                    </td>
+                                    <td class="fw-bolder text-gray-500">
+                                        {{ project.specialization }}
+                                    </td>
+                                    <td class="fw-bolder text-gray-500">
+                                        <p> {{ project.supervisor.first_name }} </p>
+                                        <p style="margin-top: -18%;"> {{project.supervisor.other_names}}</p>
+                                    </td>
+                                    {% if project.approved == True %}
+                                    <td><span class="fw-bold text-success"> Approved</span></td>
+                                    {% else %}
+                                    <td><span class="fw-bold text-danger">Pending Approval</span></td>
+                                    {% endif %} {% if project.approved == False %}
+                                    <td class="fw-bolder text-gray-500">
+                                        <div style="margin-bottom: 4%;"> <a href="{% url 'coordinatorapprove' project.id %}"><button class="btn btn-outline-success" type="button">Approve</button> </a></div>
+                                        <div><a href = "{% url 'codecline' project.id %}" > <button class="btn btn-outline-danger" type="button"> Decline </button> </a></div>
+                                    </td>
+                                    {% else %}
+                                    <td><span class="fw-bold text-success"> Approved</span></td> 
+                                </tr>
+                            </tbody>
+                            {% endif %} {% endfor %} {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+        <div class="col-12 px-0 mb-4 ">
+            <div class="card border-0 shadow ">
+                <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                    
+                        <h2 class="fs-5 fw-bold mb-0">Specializations</h2>
+                        <a href="{% url 'addspecialization' %}" class="btn btn-sm btn-primary text-end">Add New</a>
+                        
+                        <!-- <div class="h5 fw-normal text-gray ">Tasks </div> -->
+
+                    
+                </div>
+                <span href="# " class="list-group-item list-group-item-action border-bottom ">
+                    <div class="row align-items-center ">
+                        <div class="col ps-0 m-2 ">
+                            {% for spec in specializations %}
+                            <span>
+                                |{{spec.name }}|
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+        <div class="col-12 px-0 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between border-bottom pb-3">
+                        <div>
+                            <div class="h6 mb-0 d-flex align-items-center">
+                                <svg class="icon icon-xs text-gray-500 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path></svg>                                Upcoming Events
+                            </div>
+                        </div>
+
+                        <div class="col text-end">
+                            <a href="{% url 'allevents' %}" class="btn btn-sm btn-primary">Add New </a>
+                        </div>
+                    </div>
+                    {% if events.count == 0 %}
+                 <p class = "mt-2"> There are no upcoming events </p>
+                     {% else %}
+                    {% for event in events %}
+                    <div class="d-flex align-items-center justify-content-between border-bottom py-3">
+                        <div>
+                            <div class="h6 mb-0 d-flex align-items-center">
+                                <svg class="icon icon-xs text-gray-500 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path></svg>                                {{event.name}}
+                            </div>
+                            <div class="small card-stats">
+                                {{event.date|date:"l"}}, {{event.date}}
+                                <!-- <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg> -->
+                            </div>
+                        </div>
+                        <div>
+                            <a href="#" class="d-flex align-items-center fw-bold">
+                                    {{event.time}}
+                                    <!-- <svg class="icon icon-xs text-gray-500 ms-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> -->
+                                </a>
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-12 px-0">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h2 class="fs-5 fw-bold mb-1">Acquisition</h2>
+                    <p>Tells you where your visitors originated from, such as search engines, social networks or website referrals.</p>
+                    <div class="d-block">
+                        <div class="d-flex align-items-center me-5">
+                            <div class="icon-shape icon-sm icon-shape-danger rounded me-3">
+                                <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <div class="d-block">
+                                <label class="mb-0">Bounce Rate</label>
+                                <h4 class="mb-0">33.50%</h4>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center pt-3">
+                            <div class="icon-shape icon-sm icon-shape-purple rounded me-3">
+                                <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path></svg>                                </div>
+                            <div class="d-block">
+                                <label class="mb-0">Sessions</label>
+                                <h4 class="mb-0">9,567</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+
+
+
+{% endblock javascripts %}

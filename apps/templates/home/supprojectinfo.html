@@ -1,0 +1,382 @@
+{% extends "layouts/supervbase.html" %}
+
+{% block title %} Project Information {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+    .scrollabble {
+        width: 100%;
+        height: 500px;
+        overflow-y: auto;
+        max-height: 400px;
+    }
+    #chatroom {
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+    }
+    #chatroom::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+    }
+</style> 
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                <li class="breadcrumb-item">
+                    <a href="#">
+                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    </a>
+                </li>
+                <li class="breadcrumb-item"><a href="#">Physics Final Year Project</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Project Info</li>
+            </ol>
+        </nav>
+        <h2 class="h4">Project Info</h2>
+        <p class="mb-0">Find all info and enrolled students for a project here</p>
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <!-- <a href="#" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+                  <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            
+              </a> -->
+       
+    </div>
+</div>
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card border-0 shadow">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h2 class="h5 mb-4">Project Information </h2>
+                                    </div>
+                <div class="row">
+                <!-- <div class="col-md-6 mb-3"> -->
+                <div>
+                    <span class=" fw-bolder text-gray-500 "> Title :  {{project.title }}</span>
+                    <!-- <input class="form-control " id="first_name " type="text " placeholder="Enter your first name " required> -->
+
+                    <p class='lead'> {{project.description}}</p>
+                </div>
+                <!-- </div> -->
+
+            </div>
+            <div class="row align-items-center ">
+                <div class="col-md-6 mb-3 ">
+                    <span class="fw-bolder text-gray-500 "> Supervisor </span>
+                    <p>{{project.supervisor.first_name}} {{project.supervisor.other_names}} </p>
+                </div>
+                <div class="col-md-6 mb-3 ">
+                    <span class="fw-bolder text-gray-500 "> Specialization</span>
+                    <p>{{project.specialization}}</p>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-md-6 mb-3 ">
+                    <span class="fw-bolder text-gray-500 "> Status</span> {% if project.approved %}
+                    <p>Approved</p>
+                    {% else %}
+                    <p> Pending Approval </p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3 ">
+                    <span class="fw-bolder text-gray-500 "> Date Published</span>
+                    <p>{{project.date_created.date}}</p>
+
+                </div>
+            </div>
+            <!-- <h2 class="h5 my-4 ">Location</h2> -->
+
+            <div class="mt-0 ">
+                <a href="{% url 'supeditproject' project.id %}"><button class="btn btn-gray-800 mt-0 animate-up-2 ">Edit Project </button> </a>
+                <button class="btn btn-danger  mt-0 animate-up-2">Delete Project</button>
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        
+        
+        
+        <div class="col-12 col-xxl-6 mb-4 ">
+            <div class="card border-0 shadow ">
+                <div class="card-header border-bottom d-flex align-items-center justify-content-between ">
+                    <h2 class="fs-5 fw-bold mb-0 ">Enrolled Students  ({{students.count}})</h2>
+                    <a href="# " class="btn btn-sm btn-primary ">See all</a>
+                </div>
+                <div class="card-body ">
+                    <div class="list-group-item border-bottom">
+                        <div class="row align-items-center">
+
+                            <div class="col ps-0 m-2">
+                                {% if students.count == 0 %}
+                                <p class="h6 mb-0 text-small"> No students enrolled for this project</p>
+                                {% elif student.count is not 0 %} {% for student in students %}
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="h6 mb-0 text-small"><span>{{forloop.counter}}. </span>{{student.first_name}} {{student.last_name}}</h4>
+
+                                    </div>
+                                    <div class="text-end">
+
+
+                                        <!-- Button Modal -->
+                                        <small type="button" style="color: red;" data-bs-toggle="modal" data-bs-target="#modal-default">Remove From Project</small>
+                                        <!-- Modal Content -->
+                                        <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 class="h6 modal-title">Confirm Removal From Project Group </h2>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <p class='lead'> Are you sure you want to delete {{student.first_name}} {{student.last_name}} from project </p>
+                                                        <p>Project slot will be available for other students and removed student will be able to select another project</p>
+ 
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a href="{% url 'supdeletestudentfromproject' 1 %}"> <button type="button" class="btn btn-secondary">Remove</button> </a>
+                                                        <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if student.approved == True %}
+                                <span class="font-small mt-1 mb-0">{{student.indexNo}}</span>
+                                <span class="font-small mt-1 mb-0 text-success">Approved</span>
+                                {% elif student.approved == False %}
+                                <p class="font-small mt-1 mb-0">{{student.indexNo}}</p>
+                                <p class="text-danger">Pending Approval | <span class="fw-bold mt-1 mb-0 text-success"> <a href = "{% url 'supervisoraccept' student.id %}" class = "text-success">Approve  </a></span> </p>
+                                {% endif %}
+                                <hr> {% endfor %} {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="col-12 col-xxl-6 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                        <h2 class="fs-5 fw-bold mb-0">Project Files</h2>
+                        <a href="{% url 'projectfiles' %}" class="btn btn-sm btn-primary">Add New</a>
+                    </div>
+                    <div class="list-group-item border-bottom">
+                        <div class="row align-items-center">
+
+                            <div class="col ps-0 m-2">
+                                {% if projectFiles.count == 0 %}
+                                <p class="h6 mb-0 text-small"> No project files for this project</p>
+                                {% else %}
+                                {% for file in projectFiles %}
+                               <p class="h6 mb-2 text-small sethov">  <span>{{forloop.counter}}.</span><a class = "sethov" href = "{% url 'projectfiles' %}"> {{file.filename}} </a></p>
+                                {% endfor %} {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            </div>
+        </div>
+        <div class="col-12 col-xl-4">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card border-0 shadow">
+                        <div class="card-header d-flex flex-row align-items-center flex-0 border-bottom">
+                            <div class="d-block">
+                                <div class="h6 fw-normal text-gray mb-2">Project Chatroom </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 scrollabble"  style = "max-height:400px;" id ='chatroom'>
+                           
+                            {% for chat in chats %}
+                            {% if chat.sender == request.user %}
+                             <a href="#" class="list-group-item list-group-item-action border-bottom" style = "width:500px; border:1px solid rgb(193, 193, 193); border-radius:20px; margin:8px; margin-top:12p; background-color:beige;">
+                                 <div class="row align-items-center">
+                                     <div class="col-auto">
+                                         <!-- Avatar -->
+                                          <img alt="Image placeholder" src="{{chat.sender.supervisor.supervisorimg.url}}" class="avatar-md rounded">
+                                     </div>
+                                     <div class="col ps-0 m-2">
+                                         <div class="d-flex justify-content-between align-items-center">
+                                             <div>
+                                                 <h4 class="h6 mb-0 text-small">{{chat.sender.supervisor.first_name}} {{chat.sender.supervisor.other_names}}</h4>
+                                             </div>
+                                             <div class="text-end">
+                                                 <small>{{ chat.datesent |timesince}} ago</small>
+                                             </div>
+                                         </div>
+                                         <p class="font-small mt-1 mb-0">{{chat.message}}</p>
+                                     </div>
+                                 </div>
+                             </a>
+                             
+                             {% elif chat.sender.supervisor %}
+                             <a href="#" class="list-group-item list-group-item-action border-bottom" style = "width:500px; border:1px solid rgb(193, 193, 193); border-radius:20px; margin:8px; margin-top:12px; ">
+                                 <div class="row align-items-center">
+                                     <div class="col-auto">
+                                         <!-- Avatar -->
+                                         <img alt="Image placeholder" src="{{chat.sender.supervisor.supervisorimg.url}}" class="avatar-md rounded">
+                                     </div>
+                                     <div class="col ps-0 m-2">
+                                         <div class="d-flex justify-content-between align-items-center">
+                                             <div>
+                                                 <h4 class="h6 mb-0 text-small">{{chat.sender.supervisor.first_name}} {{chat.sender.supervisor.other_names}}</h4>
+                                             </div>
+                                             <div class="text-end">
+                                                 <small> {{ chat.datesent |timesince}} </small>
+                                             </div>
+                                         </div>
+                                         <p class="font-small mt-1 mb-0">{{chat.message}}</p>
+                                     </div>
+                                 </div>
+                             </a> 
+                             {% elif chat.sender.student %}
+                             <a href="#" class="list-group-item list-group-item-action border-bottom" style = "width:500px; border:1px solid rgb(193, 193, 193); border-radius:20px; margin:8px; margin-top:12px; ">
+                                 <div class="row align-items-center">
+                                     <div class="col-auto">
+                                         <!-- Avatar -->
+                                         <img alt="Image placeholder" src="{{chat.sender.student.studentimg.url}}" class="avatar-md rounded">
+                                     </div>
+                                     <div class="col ps-0 m-2">
+                                         <div class="d-flex justify-content-between align-items-center">
+                                             <div>
+                                                 <h4 class="h6 mb-0 text-small">{{chat.sender.student.first_name}} {{chat.sender.student.last_name}}</h4>
+                                             </div>
+                                             <div class="text-end">
+                                                 <small> {{ chat.datesent |timesince}} </small>
+                                             </div>
+                                         </div>
+                                         <p class="font-small mt-1 mb-0">{{chat.message}}</p>
+                                     </div>
+                                 </div>
+                             </a>
+                             {% endif %}
+                             {% endfor %}
+                         </div>
+                        <div class="row mb-0">
+                            <div class="col" style = 'margin: 0px;'>
+                                <div class="progress-wrapper" >
+                                    <div class="progress-info" style = "padding-right:-200px;">
+                                    <textarea class="form-control mb-0 mx-2 mb-1 mt-3" placeholder="Enter your message..." id="textarea" rows="2" style = 'width: 100%;'></textarea>
+                                        
+                                     <div style = "position: relative; left:-50px;">
+                                        <a href = "#" id = 'sendchat'>
+                                    <svg href = "#" class="icon icon-m text-gray-800 me-0" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill-rule="evenodd" d="M0 256C0 397.4 114.6 512 256 512s256-114.6 256-256S397.4 0 256 0S0 114.6 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z"/></svg>
+                                </a>
+                                </div>
+                                        <!-- <div class="small fw-bold text-gray-500"><span>75 %</span></div> -->
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    
+    {{ project.id|json_script:"room-name" }}
+    {{ request.user.username|json_script:"json-username" }}
+    {{supervisor.first_name|json_script:'student-first_name'}}
+    {{supervisor.other_names|json_script:'student-last_name'}}
+    {{supervisor.supervisorimg.url|json_script:'student-img'}}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    const username = JSON.parse(document.getElementById('json-username').textContent);
+    const supervisor_first_name = JSON.parse(document.getElementById('student-first_name').textContent);
+    const supervisor_last_name = JSON.parse(document.getElementById('student-last_name').textContent);
+    const supervisor_image = JSON.parse(document.getElementById('student-img').textContent);
+    
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chatroom/'
+        + roomName
+        +'/'
+       
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.message) {
+        let chatmessage = '<a href="#" class="list-group-item list-group-item-action border-bottom" style = "width:500px; border:1px solid rgb(193, 193, 193); border-radius:20px; margin:8px; margin-top:12px;"> <div class="row align-items-center"><div class="col-auto">'
+            chatmessage += '<img alt="Image placeholder" src="'+ data.senderimg + '" class="avatar-md rounded"></div>'
+            chatmessage += '<div class="col ps-0 m-2"> <div class="d-flex justify-content-between align-items-center"> <div>'
+            chatmessage += '<h4 class="h6 mb-0 text-small">' + data.sender +'</h4> </div><div class="text-end">'
+            chatmessage +=  '<small>just now </small></div></div>'
+            chatmessage +=  '<p class="font-small mt-1 mb-0">' + data.message + '</p></div></div></a>'
+        
+            document.getElementById('chatroom').innerHTML +=  chatmessage
+        } else {
+            alert('The message was empty!')
+        }
+        scrollToBottom();
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    //document.querySelector('#chat-message-input').focus();
+   // document.querySelector('#chat-message-input').onkeyup = function(e) {
+   //     if (e.keyCode === 13) {  // enter, return
+    //        document.querySelector('#chat-message-submit').click();
+   //     }
+  //  };
+
+  document.querySelector('#sendchat').onclick = function(e) {
+    e.preventDefault()
+
+    const messageInputDom = document.querySelector('#textarea');
+    const message = messageInputDom.value;
+
+   
+
+    chatSocket.send(JSON.stringify({
+        'message': message,
+        'username': username,
+        'sender_first_name' : supervisor_first_name,
+        'sender_last_name' : supervisor_last_name,
+        'sender_img' : supervisor_image,
+        'project-id' : roomName
+    }));
+
+    messageInputDom.value = '';
+
+    return false
+};
+    
+    function scrollToBottom() {
+        let objDiv = document.getElementById("chatroom");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    // Add this below the function to trigger the scroll on load.
+    scrollToBottom();
+</script>
+
+
+{% endblock javascripts %}

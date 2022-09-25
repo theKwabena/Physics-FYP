@@ -1,0 +1,362 @@
+{% extends "layouts/stdbase.html" %} {% block title %} Student Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+    .scrollabble {
+        width: 100%;
+        height: 500px;
+        overflow-y: auto;
+        max-height: 400px;
+    }
+    
+    #chatroom {
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+    }
+    #chatroom::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+    }
+</style>
+
+{% endblock stylesheets %} {% block content %}
+
+<div class="px-4 mt-5 mb-3">
+    <h2 class="fw-extrabold mb-1" style = "text-align: center;">{{student.project}}</h2>
+    
+</div>
+<div class="row">
+    
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card border-0 shadow">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h2 class="fs-5 fw-bold mb-0">Project Tasks</h2>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-items-center table-flush">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="border-bottom" scope="col">Task</th>
+                                        <th class="border-bottom" scope="col">Date Added</th>
+                                        <th class="border-bottom" scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if tasks.count == 0 %}
+                                <tr style = 'border: 1px solid white'> 
+                                    <td class = "align-items-center">
+                                <p> There are no tasks assigned to you </p>
+                            </td>
+                            </tr>
+                                {% else %}
+                                    {% for task in tasks %}
+
+                <td class="fw-bolder text-gray-500" scope="row">
+                    <a href="#">
+                        <p class="fw-bolder text-gray-500">{{task.name}} </p>
+
+                    </a>
+
+                </td>
+                <td><span class="fw-normal">{{task.date_created}}</span></td>
+                {% if task.completed == True %}
+                <td><span class="fw-normal text-success"> Completed </span></td>
+                
+                {% else %}
+                <td><span class="fw-normal text-danger"> Not Completed </span></td>
+                
+                {% endif %}
+                
+                
+               
+            </tr>
+            {% endfor %} {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xxl-6 mb-4">
+                    <div class="card border-0 shadow">
+                        <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                            <h2 class="fs-5 fw-bold mb-0">My Project Group </h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush list my--3">
+                               {% if mates.count is 0 %}
+                               <p> You have no project mates at the moment  </p>
+                               {% endif %}
+                                {% for stud in mates %}
+                                <li class="list-group-item px-0">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <!-- Avatar -->
+                                            <a href="#" class="avatar">
+                                                <img class="rounded" alt="Image placeholder" src="{{stud.studentimg.url}}">
+                                            </a>
+                                        </div>
+                                        <div class="col-auto ms--2">
+                                            <h4 class="h6 mb-0">
+                                                <a href="#">{{stud.first_name}} {{stud.last_name}}</a>
+                                            </h4>
+                                            <!-- <div class="d-flex align-items-center">
+                                                <div class="bg-success dot rounded-circle me-1"></div>
+                                                <small>Online</small>
+                                            </div> -->
+                                        </div>
+                                        <div class="col text-end">
+                                            <a href="#" class="btn btn-sm btn-secondary d-inline-flex align-items-center">
+                                                <svg class="icon icon-xxs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path></svg>                                                Message
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="col-12 col-xxl-6 mb-4">
+                    <div class="card border-0 shadow">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between border-bottom pb-3">
+                                <div>
+                                    <div class="h5 mb-0 d-flex align-items-center">
+                                        <svg class="icon icon-xs text-gray-500 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path></svg>                                    Upcoming Events
+                                    </div>
+                                </div>
+    
+                            </div>
+                            {% for event in events %}
+                            <div class="d-flex align-items-center justify-content-between border-bottom py-3">
+                                <div>
+                                    <div class="h6 mb-0 d-flex align-items-center">
+                                        <svg class="icon icon-xs text-gray-500 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path></svg>                                    {{event.name}}
+                                    </div>
+                                    <div class="small card-stats">
+                                        {{event.date|date:"l"}}, {{event.date}}
+                                        <!-- <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg> -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="#" class="d-flex align-items-center fw-bold">
+                                            {{event.time}}
+                                            <!-- <svg class="icon icon-xs text-gray-500 ms-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> -->
+                                        </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+    
+    
+                        </div>
+                    </div>
+                </div>
+               
+                </div>
+        </div>
+        
+        <div class="col-12 col-xl-4" >
+            <div class="col-12 px-0 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="fs-5 fw-bold mb-0">Project Chatroom</h2>
+                            </div>
+
+                        </div>
+                    </div>
+                        <div class="col-sm-4 scrollabble"  style = "max-height:400px;" id ='chatroom'>
+                           
+                           {% for chat in chats %}
+                           {% if chat.sender == request.user %}
+                            <a href="#" class="list-group-item list-group-item-action border-bottom" style = "width:500px; border:1px solid rgb(193, 193, 193); border-radius:20px; margin:8px; margin-top:12p; background-color:beige">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <!-- Avatar -->
+                                         <img alt="Image placeholder" src="{{chat.sender.student.studentimg.url}}" class="avatar-md rounded">
+                                    </div>
+                                    <div class="col ps-0 m-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h4 class="h6 mb-0 text-small">{{chat.sender.student.first_name}} {{chat.sender.student.last_name}}</h4>
+                                            </div>
+                                            <div class="text-end">
+                                                <small>{{ chat.datesent |timesince}} ago</small>
+                                            </div>
+                                        </div>
+                                        <p class="font-small mt-1 mb-0">{{chat.message}}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            {% elif chat.sender.supervisor %}
+                            <a href="#" class="list-group-item list-group-item-action border-bottom" style = "width:500px; border:1px solid rgb(193, 193, 193); border-radius:20px; margin:8px; margin-top:12px;">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <!-- Avatar -->
+                                        <img alt="Image placeholder" src="{{chat.sender.supervisor.supervisorimg.url}}" class="avatar-md rounded">
+                                    </div>
+                                    <div class="col ps-0 m-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h4 class="h6 mb-0 text-small">{{chat.sender.supervisor.first_name}} {{chat.sender.supervisor.other_names}}</h4>
+                                            </div>
+                                            <div class="text-end">
+                                                <small> {{ chat.datesent |timesince}} </small>
+                                            </div>
+                                        </div>
+                                        <p class="font-small mt-1 mb-0">{{chat.message}}</p>
+                                    </div>
+                                </div>
+                            </a> 
+                            {% elif chat.sender.student %}
+                            <a href="#" class="list-group-item list-group-item-action border-bottom" style = "width:500px; border:1px solid rgb(193, 193, 193); border-radius:20px; margin:8px; margin-top:12px;">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <!-- Avatar -->
+                                        <img alt="Image placeholder" src="{{chat.sender.student.studentimg.url}}" class="avatar-md rounded">
+                                    </div>
+                                    <div class="col ps-0 m-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h4 class="h6 mb-0 text-small">{{chat.sender.student.first_name}} {{chat.sender.student.last_name}}</h4>
+                                            </div>
+                                            <div class="text-end">
+                                                <small> {{ chat.datesent |timesince}} </small>
+                                            </div>
+                                        </div>
+                                        <p class="font-small mt-1 mb-0">{{chat.message}}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="row mb-0">
+                            <div class="col" style = 'margin: 0px;'>
+                                <div class="progress-wrapper" >
+                                    <div class="progress-info" style = "padding-right:-200px;">
+                                    <textarea class="form-control mb-0 mx-2 mb-1 mt-3" placeholder="Enter your message..." id="textarea" rows="2" style = 'width: 100%;'></textarea>
+                                        
+                                     <div style = "position: relative; left:-50px;">
+                                        <a href = "#" id = 'sendchat'>
+                                    <svg  class="icon icon-m text-gray-800 me-0" style = "cursor: pointer" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill-rule="evenodd" d="M0 256C0 397.4 114.6 512 256 512s256-114.6 256-256S397.4 0 256 0S0 114.6 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z"/></svg>
+                                </a>
+                                </div>
+                                        <!-- <div class="small fw-bold text-gray-500"><span>75 %</span></div> -->
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            
+        </div>
+</div>
+</div>
+
+{{ student.project.id|json_script:"room-name" }}
+{{ request.user.username|json_script:"json-username" }}
+{{student.first_name|json_script:'student-first_name'}}
+{{student.last_name|json_script:'student-last_name'}}
+{{student.studentimg.url|json_script:'student-img'}}
+
+
+
+{% endblock content %}
+
+            <!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    const username = JSON.parse(document.getElementById('json-username').textContent);
+    const student_first_name = JSON.parse(document.getElementById('student-first_name').textContent);
+    const student_last_name = JSON.parse(document.getElementById('student-last_name').textContent);
+    const student_image = JSON.parse(document.getElementById('student-img').textContent);
+    
+    
+    
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chatroom/'
+        + roomName
+        +'/'
+       
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.message) {
+        let chatmessage = '<a href="#" class="list-group-item list-group-item-action border-bottom" style = "width:500px; border:1px solid rgb(193, 193, 193); border-radius:20px; margin:8px; margin-top:12px;"> <div class="row align-items-center"><div class="col-auto">'
+            chatmessage += '<img alt="Image placeholder" src="'+ data.senderimg + '" class="avatar-md rounded"></div>'
+            chatmessage += '<div class="col ps-0 m-2"> <div class="d-flex justify-content-between align-items-center"> <div>'
+            chatmessage += '<h4 class="h6 mb-0 text-small">' + data.sender +'</h4> </div><div class="text-end">'
+            chatmessage +=  '<small>just now </small></div></div>'
+            chatmessage +=  '<p class="font-small mt-1 mb-0">' + data.message + '</p></div></div></a>'
+        
+            document.getElementById('chatroom').innerHTML +=  chatmessage
+        } else {
+            alert('The message was empty!')
+        }
+        scrollToBottom();
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    //document.querySelector('#chat-message-input').focus();
+   // document.querySelector('#chat-message-input').onkeyup = function(e) {
+   //     if (e.keyCode === 13) {  // enter, return
+    //        document.querySelector('#chat-message-submit').click();
+   //     }
+  //  };
+
+  document.querySelector('#sendchat').onclick = function(e) {
+    e.preventDefault()
+
+    const messageInputDom = document.querySelector('#textarea');
+    const message = messageInputDom.value;
+
+   
+
+    chatSocket.send(JSON.stringify({
+        'message': message,
+        'username': username,
+        'sender_first_name' : student_first_name,
+        'sender_last_name' : student_last_name,
+        'sender_img' : student_image,
+        'project-id' : roomName
+    }));
+
+    messageInputDom.value = '';
+
+    return false
+};
+    
+    function scrollToBottom() {
+        let objDiv = document.getElementById("chatroom");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    // Add this below the function to trigger the scroll on load.
+    scrollToBottom();
+</script>
+
+
+{% endblock javascripts %}

@@ -1,0 +1,170 @@
+{% extends "layouts/stdbase.html" %} {% block title %} Profile Settings {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+
+<div class="row mt-5">
+    <div class="col-12 col-xl-8">
+        <div class="card card-body border-0 shadow mb-4">
+            <h2 class="h5 mb-4">Student Details</h2>
+
+            <div class="row">
+                <!-- <div class="col-md-6 mb-3"> -->
+                <div>
+                    <p class='lead'> Name : <span class=" fw-bolder text-gray-700 ">{{user.last_name|title}} {{user.first_name}}</span> </p>
+                    <!-- <input class="form-control " id="first_name " type="text " placeholder="Enter your first name " required> -->
+
+                    <!-- <p class='lead'> {{project.description}}</p> -->
+                </div>
+                <!-- </div> -->
+
+            </div>
+            <div class="row align-items-center ">
+                <div class="col-md-6 mb-3 ">
+                    <span class="fw-bolder text-gray-500 "> Index Number </span>
+                    <p>{{user.indexNo}} </p>
+                </div>
+                <div class="col-md-6 mb-3 ">
+                    <span class="fw-bolder text-gray-500 "> Email </span>
+                     <p>{{user.email}} </p>
+                    {% if user.email is not None %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-md-6 mb-3 ">
+                    <span class="fw-bolder text-gray-500 "> Selected Topic</span>
+                    <p>{{user.project.title|slice:"0:40"}} {% if user.project.title|length > 40 %}...{% else %} {% endif%}</p>
+                </div>
+                <div class="col-md-6 mb-3 ">
+                    <span class="fw-bolder text-gray-500 "> Status</span>{% if student.project is None %}
+                    <p> No topic selected </p> {% elif student.project is not None and student.approved %}
+                    <p>Approved</p>
+                    {% elif student.project is not None and student.approved is False %}
+                    <p class="text-danger"> Pending Approval</span></p>
+                    {% endif %}
+
+
+                </div>
+            </div>
+            <!-- <h2 class="h5 my-4 ">Location</h2> -->
+
+            
+
+
+        </div>
+
+    </div>
+    <div class="col-12 col-xl-4">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card shadow border-0 text-center p-0">
+                    <div class="profile-cover rounded-top" data-background="{{ ASSETS_ROOT }}/img/profile-cover.jpg"></div>
+                    <div class="card-body pb-5">
+                        <img src="{{user.studentimg.url}}" class="avatar-xl rounded-circle mx-auto mt-n7 mb-4" alt="Neil Portrait">
+                       
+                        <h5 class="fw-normal mb-0">
+                            
+                            <!-- <input name="images" onchange="readURL(this);" type="file" accept="image/*"/> -->
+                            {{ user.last_name}} {{ user.first_name}}
+                            {% if user.verified == True %}
+                            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" clip-rule="evenodd"/></svg>
+                        {% else %} <span class = "text-small text-danger" style = 'font-size:12px;'>unverified</span> {% endif %}
+                        </h5>
+                        <p class="text-gray mb-0">
+                            {{ user.indexNo }}
+                        </p>
+                        <p class="text-gray mb-0">
+                            {{ user.email }} 
+                        </p>
+                        <hr>
+                        {% if not user.verified == True %}
+                        <!-- <button class="btn btn-gray-800" id="basicAlert">Update Project </button> -->
+                        
+                        <a href = "{% url 'verifystudentemail' %}" class = "text-gray mb-0 sethov" id="basicAlert">Verify Account</a> <hr>{% endif %} 
+                        <a  class="text-gray mb-0 sethov" href="#" data-bs-toggle="modal" data-bs-target="#modal-default{{user.id}}"><span></span>Change Email</a>
+                        <hr>
+                       
+                        <a href = "{% url 'change-password' %}" class="text-gray mb-0 sethov"> Change Password </a>
+                        <hr>
+                        <p class="text-gray mb-0"> Change Profile Picture</p>
+                       
+                        <form method = 'POST' enctype="multipart/form-data">
+                            {% csrf_token %}
+                        {{form.as_p}}    <button class="btn btn btn-primary mt-2" style = 'margin-top:-10px;'  value = 'save' name ='submit'>Save Profile</button>
+                        <!-- <div><img id="myimage" src=""></div> -->
+                     
+                        </form>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-default{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="h6 modal-title">Confirm Email Change</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align: center;">
+                        <p class='lead'> Are you sure you want to  <span class="text-danger">change </span> your current email: <b>{{user.email}}?</b>  </p>
+                        <p>If you proceed, your account will be marked as <b> unverified</b> this action is not reversible. You can verify your account by verifying your new email, All notifications however will be sent to this email till you verify your new email</p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'changeEmail' user.last_name %}"> <button type="button" class="btn btn-danger">Proceed</button> </a>
+                        <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {{user.email|json_script:"user-email" }}
+    
+
+        {% endblock content %}
+
+        <!-- Specific Page JS goes HERE  -->
+        {% block javascripts %}
+        <script>
+            const userEmail = JSON.parse(document.getElementById('user-email').textContent);
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-gray'
+                },
+                buttonsStyling: false
+            });
+
+            document.getElementById('basicAlert').addEventListener('click', function() {
+                swalWithBootstrapButtons.fire(
+                    'Verification Email Sent',
+                    'Verification email sent to ' + userEmail + ', please check your email'
+                )
+            });
+        </script>
+        
+        
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js">
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                  var reader = new FileReader();
+              
+                  reader.onload = function(e) {
+                    $('#blah').attr('src', e.target.result);
+                  }
+              
+                  reader.readAsDataURL(input.files[0]);
+                }
+              }
+              
+              $("#imgInp").change(function() {
+                readURL(this);
+              });
+            </script> -->
+
+        {% endblock javascripts %}

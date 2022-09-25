@@ -1,0 +1,111 @@
+
+{% extends 'base/baseskeleteon.html' %}
+{% load static %}
+
+{% block content %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'base/css/cusstyle.css' %}">
+<style>
+    .projectsearchbox{
+        font-size: 3rem;
+        padding: 0.5rem 2rem;
+        color: #303830;
+        background: #fff;
+        border: var(--border);
+        width: 900px;
+        
+    }
+    .projectsearchmain{
+        display: flex;
+        justify-content: center;
+    }
+    
+    
+</style>
+{% endblock stylesheets %}
+
+
+<div  class = "heading" style = "margin-top:120px; margin-bottom: 50px;">
+    <form method = 'GET'>
+        <div class="projectsearchmain">
+            <div class = "projectsearchbox"> 
+                <p style = 'font-size: 20px'> Search in {{specName}} </p>
+                <hr>
+                {{projectfilter.form.title}}  {{projectfilter.form.supervisor}}
+                  <button class = 'btn btn-primary' type = 'submit'>Search</button> </div>
+                  
+            </div>
+        </form> </span>
+    </div>
+    
+    
+   
+ 
+     
+<section class="features" id="Projects" style = 'margin-top:-40px;'>
+    {% if projects.paginator.count == 0 %}
+    <div class="projectsearchmain">
+    <p style ='margin-top:20px; margin-bottom:300px; font-size:50px; text-align:center'> No project topic match your search in {{specName}}</p>  </div>
+
+    {% else %}
+    <div class="box-container" id="mabre">
+        {% for project in projects %}
+        <a href="{% url 'projectdetail' project.id %}">
+            <div class="box">
+                <img src="{{project.projectimg.url}}" alt="">
+                <h3>{{project.title|slice:"0:100"}} </h3>
+
+                <span id='sname'> <h4> | {{project.supervisor.first_name}} {{project.supervisor.other_names}} |</h4></span>
+                <p>{{project.description|slice:"0:100"}}..</p>
+            </div>
+        </a>
+        {% endfor %}
+        {% endif %}
+        
+    </div>
+    {% if not projects.paginator.count == 0 %}
+    <div class="heading" style="font-size:15px; margin-top:30px;">
+        <div class="projectsearchmain"> <nav aria-label="Page navigation example">
+             <ul class="pagination mb-0" style = "font-size: 23px;">
+                 {% if projects.has_previous %} 
+                 <li class="page-item">
+                     <a class="page-link" href = "?page={{ projects.previous_page_number }}">Previous</a>
+                 </li>
+                 {% else %}
+                 <li class="page-item disabled">
+                     <a class="page-link" href="#" tabindex="-1">Previous</a>
+                   </li>
+                 {% endif %}
+                 
+                 {% for i in projects.paginator.page_range %}
+                     {% if forloop.counter == projects.number %}
+                     <li class="page-item active">
+                         <div class="page-link">{{forloop.counter}} <span class="sr-only"></span></div>
+                       </li>
+                     {%else %}
+                     <li class="page-item">
+                         <a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a>
+                     </li>
+                     
+                     {% endif %}
+                      {% endfor %}
+                 
+                      {% if projects.has_next %}
+                      <li class="page-item"><a class="page-link" href = "?page={{projects.next_page_number}}"> Next </a> </li>
+                      <!-- <li class="page-item"><a class="page-link" href = "?page={{projects.paginator.num_pages}}">Last</a> </li> -->
+                      {% else %}
+                      <li class="page-item disabled">
+                          <a class="page-link" href="#" tabindex="-1">Next</a>
+                        </li>
+                      {% endif %} 
+                 
+             </ul>
+         </nav> </div>
+ </div> {% endif %}
+   
+</section>
+
+
+
+{% endblock content %}

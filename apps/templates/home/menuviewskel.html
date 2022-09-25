@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %} {% block title %}  {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %} {% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
+
+
+
+
+<div class="row">
+    <div class="col-12 col-xl-8">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="fs-5 fw-bold mb-0">My Topics</h2>
+                            </div>
+                            <div class="col text-end">
+                                <a href="{% url 'supervisorall' %}" class="btn btn-sm btn-primary">See all</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="border-bottom" scope="col">Project Topic</th>
+                                    <th class="border-bottom" scope="col">Specialization</th>
+                                    <th class="border-bottom" scope="col">Status</th>
+                                    <th class="border-bottom" scope="col">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in projects|slice:"0:5" %}
+                                <tr>
+                                    <th class="text-gray-900" scope="row">
+                                        {{i.title}}
+                                    </th>
+                                    <td class="fw-bolder text-gray-500">
+                                        {{i.specialization}}
+                                    </td>
+                                    {% if i.approve == True %}
+                                    <td><span class="fw-bold"> Approved</span></td>
+                                    {% else %}
+                                    <td><span class="fw-bold text-danger">Pending Approval</span></td>
+                                    {% endif %}
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  <span class="icon icon-sm">
+                                                      <span class="fas fa-ellipsis-h icon-dark"></span>
+                                                  </span>
+                                                  <span class="">Edit</span>
+                                              </button>
+                                            <div class="dropdown-menu py-0">
+                                                <a class="dropdown-item rounded-top" href="#"><span class="fas fa-eye me-2"></span>View Details</a>
+                                                <a class="dropdown-item" href="#"><span class="fas fa-edit me-2"></span>Edit</a>
+                                                <a class="dropdown-item text-danger rounded-bottom" href="#"><span class="fas fa-trash-alt me-2"></span>Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>

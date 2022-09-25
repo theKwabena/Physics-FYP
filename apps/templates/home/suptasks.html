@@ -1,0 +1,121 @@
+{% extends "layouts/supervbase.html" %} {% block title %} Supervisor Tasks {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+
+<!-- <a href="#" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+    <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+
+    </a> -->
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'supervisor' %}">
+                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    </a>
+                </li>
+                <li class="breadcrumb-item"><a href="#">Physics Final Year Project</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Supervisor All tasks</li>
+            </ol>
+        </nav>
+        <h2 class="h4">All Tasks</h2>
+        <p class="mb-0">Find All Project Tasks Here</p>
+    </div>
+   
+</div>
+
+<a href = "{% url 'addtask' %}"><button class="btn btn-gray-800 mb-4"> Add New Task</button> </a>
+
+
+<div class="table-responsive">
+    <table class="table align-items-center table-flush">
+        <thead class="thead">
+            <tr>
+                <th class="border-gray-200">Task</th>
+                <th class="border-gray-200">Project Group</th>
+                <th class="border-gray-200">Date Created</th>
+                <th class="border-gray-200"> Status </th>
+                <th class="border-gray-200">Complete / Delete </th>
+                
+                <!-- <th class="border-gray-200">Project Group</th>
+                <th class="border-gray-200">Edit/Delete</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Item -->
+            <tr>
+                {% for task in tasks %}
+
+                <td class="fw-bolder text-gray-500" scope="row">
+                    <a href="#">
+                        <p class="fw-bolder text-gray-500">{{task.name|slice:":31"}} </p>
+
+                    </a>
+
+                </td>
+                <td><span class="fw-normal">{{task.project}}</span></td>
+                <td><span class="fw-normal">{{task.date_created}}</span></td>
+                {% if task.completed == True %}
+                <td><span class="fw-normal text-success"> Completed </span></td>
+                <td><span class="fw-normal"><a href = "{% url 'deletetask' task.id %}" class = "sethov"> <b>Delete Task </b> </a></span></td>
+                
+                {% else %}
+                <td><span class="fw-normal text-danger"> Not Completed </span></td>
+                <td><span class="fw-normal"> <a href = "{% url 'marktaskcomplete' task.id %}" class = "sethov"> <b>Mark as Complete </b> </a> | <a href = "{% url 'deletetask' task.id %}" class = "sethov"> <b>Delete Task </b> </a></span></td>
+                
+                {% endif %}
+                
+                
+               
+            </tr>
+              {% endfor %}
+            <!-- Item -->
+
+        </tbody>
+    </table>
+    <div class="card-footer px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination mb-0">
+                {% if tasks.has_previous %}
+                <!-- <li class="page-item"><a class="page-link" href = "?page = 1"></a></li> -->
+                <li class="page-item"><a class="page-link" href = "?page={{ tasks.previous_page_number }}"> Previous </a> </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                  </li>
+                {% endif %}
+                {% for i in tasks.paginator.page_range %}
+                {% if forloop.counter == tasks.number %}
+                <li class="page-item active">
+                    <a class="page-link" href="#">{{forloop.counter}} <span class="sr-only"></span></a>
+                  </li>
+                {%else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a>
+                </li>
+                
+                {% endif %}
+                 {% endfor %}
+                
+            {% if tasks.has_next %}
+            <li class="page-item"><a class="page-link" href = "?page={{tasks.next_page_number}}"> Next </a> </li>
+            <!-- <li class="page-item"><a class="page-link" href = "?page={{projects.paginator.num_pages}}">Last</a> </li> -->
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Next</a>
+              </li>
+            {% endif %} 
+            </ul>
+        </nav>
+        <div class="fw-normal small mt-4 mt-lg-0">Showing <b>{{ tasks.end_index }}</b> out of <b>{{ tasks.paginator.count }}</b> entries</div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

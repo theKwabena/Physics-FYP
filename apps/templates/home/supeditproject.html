@@ -1,0 +1,204 @@
+{% extends "layouts/supervbase.html" %} {% block title %} Edit Project Topic {% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                <li class="breadcrumb-item">
+                    <a href="#">
+                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    </a>
+                </li>
+                <li class="breadcrumb-item"><a href="#">Physics Final Year Project</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Project Topic</li>
+            </ol>
+        </nav>
+        <h2 class="h4">Edit Project Topic</h2>
+        <p class="mb-0">Edit and save project topic</p>
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <!-- <a href="#" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+                  <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            
+              </a> -->
+       
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12 col-xl-8">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+
+                            <div class="col">
+                                <h2 class="fs-5 fw-bold mb-0">Edit project details</h2>
+                                <hr>
+                            </div>
+                            <form method="POST"> {% csrf_token %} {% if messages %}
+                                <ul class='message'>
+                                    {% for message in messages %}
+                                    <li {% if message.tags %} class=" {{message.tags}} " {% endif %}> {{message}}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %} {{form.as_p}}
+                                <button class="btn btn-gray-800" id="basicAlert">Update Project </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-4 ">
+        <div class="row ">
+            <div class="col-12 px-0 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header d-flex flex-row align-items-center flex-0 border-bottom">
+                        <div class="d-block">
+                            <h2 class="fs-5 fw-bold mb-0">Enrolled Students ({{students.count}})</h2>
+                        </div>
+                        <div class="col text-end">
+                            <a href="#" class="btn btn-sm btn-primary">Add Student </a>
+                        </div>
+                    </div>
+                    <div class="list-group-item border-bottom">
+                        <div class="row align-items-center">
+
+                            <div class="col ps-0 m-2">
+                                {% if students.count == 0 %}
+                                <p class="h6 mb-0 text-small"> No students enrolled for this project</p>
+                                {% else %} {% for student in students %}
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="h6 mb-0 text-small"><span>{{forloop.counter}}. </span>{{student.first_name}} {{student.last_name}}</h4>
+                                    </div>
+                                    <div class="text-end">
+
+
+                                        <!-- Button Modal -->
+                                        <small type="button" style="color: red;" data-bs-toggle="modal" data-bs-target="#modal-default">Remove From Project</small>
+                                        <!-- Modal Content -->
+                                        <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 class="h6 modal-title">Confirm Removal From Project Group </h2>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body" style="text-align: center;">
+                                                        <p class='lead'> Are you sure you want to delete {{student.first_name}} {{student.last_name}} from project </p>
+                                                        <p>Project slot will be available for other students and removed student will be able to select another project</p>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a href="{% url 'deletestudentfromproject' student.id %}"> <button type="button" class="btn btn-secondary">Remove</button> </a>
+                                                        <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="font-small mt-1 mb-0">{{student.indexNo}}</p>
+                                <hr> {% endfor %} {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 px-0 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header d-flex flex-row align-items-center flex-0 border-bottom">
+                        <div class="d-block">
+                            <h2 class="fs-5 fw-bold mb-0">Project Files </h2>
+                        </div>
+                        <div class="col text-end">
+                            <a href="#" class="btn btn-sm btn-primary">Add Files </a>
+                        </div>
+                    </div>
+                    <div class="list-group-item border-bottom">
+                        <div class="row align-items-center">
+
+                            <div class="col ps-0 m-2">
+                                {% if projectFiles.count == 0 %}
+                                <p class="h6 mb-0 text-small"> No project files for this project</p>
+                                {% else %}
+                                {% for file in projectFiles %}
+                               <p class="h6 mb-2 text-small sethov">  <span>{{forloop.counter}}.</span><a class = "sethov" href = "{% url 'projectfiles' %}"> {{file.filename}} </a></p>
+                                {% endfor %} {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 px-0 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between border-bottom pb-3">
+                            <div>
+                                <div class="h6 mb-0 d-flex align-items-center">
+                                    <svg class="icon icon-xs text-gray-500 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path></svg>                                Upcoming Events
+                                </div>
+                            </div>
+    
+                        </div>
+                        {% for event in events %}
+                        <div class="d-flex align-items-center justify-content-between border-bottom py-3">
+                            <div>
+                                <div class="h6 mb-0 d-flex align-items-center">
+                                    <svg class="icon icon-xs text-gray-500 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path></svg>                                {{event.name}}
+                                </div>
+                                <div class="small card-stats">
+                                    {{event.date|date:"l"}}, {{event.date}}
+                                    <!-- <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg> -->
+                                </div>
+                            </div>
+                            <div>
+                                <a href="#" class="d-flex align-items-center fw-bold">
+                                        {{event.time}}
+                                        <!-- <svg class="icon icon-xs text-gray-500 ms-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> -->
+                                    </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+    
+    
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-gray'
+        },
+        buttonsStyling: false
+    });
+
+    document.getElementById('basicAlert').addEventListener('click', function() {
+        swalWithBootstrapButtons.fire(
+            'Changes Saved',
+            'Changes saved, redirecting to project information'
+        )
+    });
+</script>
+
+
+{% endblock javascripts %}

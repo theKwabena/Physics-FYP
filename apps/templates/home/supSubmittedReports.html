@@ -1,0 +1,108 @@
+{% extends "layouts/supervbase.html" %} {% block title %} Submitted Reports {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+
+<!-- <a href="#" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+    <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+
+    </a> -->
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                <li class="breadcrumb-item">
+                    <a href="#">
+                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    </a>
+                </li>
+                <li class="breadcrumb-item"><a href="#">Physics Final Year Project</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Supervisor Submitted Reports</li>
+            </ol>
+        </nav>
+        <h2 class="h4">Submitted Reports</h2>
+        <p class="mb-0">Find Reports Submitted by Students Here</p>
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <!-- <a href="#" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+                  <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            
+              </a> -->
+       
+    </div>
+</div>
+
+<div class="table-settings mt-3 mb-4">
+    <div class="row align-items-center justify-content-between">
+        <div class="col col-md-6 col-lg-3 col-xl-4">
+            <form class = "navbar-search form-inline" id="navbar-search-main" method = 'GET'>
+                <div class="input-group me-2 me-lg-3" style = 'width: 1000px;'>
+                    <span class="input-group-text">
+                          <svg class="icon icon-xs" x-description="Heroicon name: solid/search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                          </svg>
+                      </span> 
+                      
+                      {{reportFilter.form.project}}
+                      <button class = 'btn btn-primary' type = 'submit'>Search</button>
+                </div>
+            </form>
+        </div>
+       
+    </div>
+</div>
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive mt-5">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class="border-gray-200">Project Topic</th>
+                <th class="border-gray-200">Report Name </th>
+                <th class="border-gray-200">Sender</th>
+                <th class="border-gray-200">Date Sent</th>
+                <th class="border-gray-200">Download</th>
+                <th class="border-gray-200">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if reports.count == 0 %}
+            <tr style = 'border: 1px solid white'> 
+                <td class = "align-items-center">
+            <p> You have no notifications </p>
+        </td>
+        </tr>
+            {% else %}
+            <tr>
+                {% for report in reports %}
+                <td>
+                <a href="{% url 'supprojectinfo' report.project.id %}">
+                    <p class="fw-bolder text-gray-500">{{ report.project.title|slice:":31" }} </p>
+
+                    <p style="margin-top: -7%;" class="fw-bolder text-gray-500"> {{ report.project.title|slice:"32:60"}}{% if project.title|length > 60 %}...{% else %} {% endif%}
+                    </p>
+                </a>
+            </td>
+                <td><span class="fw-normal">{{report.name}}</span></td>
+                <td><span class="fw-normal">{{report.sender.last_name}} {{report.sender.first_name}}</span></td>
+                <td><span class="fw-normal">{{report.date_sent}}</span></td>
+                <td><span class="fw-normal"> <a href = "{{report.file.url}}" class = "sethov"> 
+                    <svg  class="icon icon-xs me-2 mx-4" fill="currentColor" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" clip-rule="evenodd"/></svg>
+                </a></span></td>
+                <td><span class="fw-normal"> <a href = "{% url 'deleteReport' report.id  %}" class = "sethov"> 
+                    <svg  class="icon icon-xs me-2 mx-3" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" clip-rule="evenodd"></path></svg>
+                </a></span></td>              
+            </tr>
+            {% endfor %} {% endif %}
+            <!-- Item -->
+
+        </tbody>
+    </table>
+    
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

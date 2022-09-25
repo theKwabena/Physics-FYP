@@ -1,0 +1,192 @@
+{% extends "layouts/supervbase.html" %} {% block title %} Upload Project File {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+    
+    #date_selector {
+        width: 150px;
+    }
+    
+</style>
+{% endblock stylesheets %} {% block content %}
+
+
+
+
+<div class="row mt-6">
+    <div class="col-12 col-xl-8">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="fs-5 fw-bold mb-0">My Uploads </h2>
+                            </div>
+                            {% if not uploads.count == 0 %}
+                            
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-flush">
+                            <thead class="thead">
+                                <tr>
+                                    <th class="border-bottom" scope="col">File Name</th>
+                                    <th class="border-bottom" scope="col">Project</th>
+                                    <th class="border-bottom" scope="col">Download</th>
+                                    <th class="border-bottom" scope="col">Delete</th>
+                                    
+                                    <!-- <th class="border-bottom" scope="col"></th> -->
+                                </tr>
+                            </thead>
+                            <tbody> 
+                                {% if uploads.count == 0 %}
+                                <tr style = 'border: 1px solid white'> 
+                                    <td class = "align-items-center">
+                                <p> You have not uploaded project file </p>
+                            </td>
+                            </tr>
+                                {% else %}
+                                
+                                {% for upload in uploads %}
+                                <tr>
+                                <td class = "align-items-center"> {{upload.filename}} </td>
+                                <td class="fw-bolder text-gray-500" scope="row">
+                                    <a href="{% url 'supprojectinfo' upload.project.id %}">
+                                        <p class="fw-bolder text-gray-500 sethov ">{{upload.project.title|slice:":31" }} </p>
+
+                                        <p style="margin-top: -7%;" class="fw-bolder text-gray-500 sethov"> {{ upload.project.title|slice:"32:60"}}{% if project.title|length > 60 %}...{% else %} {% endif%}
+                                        </p> 
+                                    </a>
+
+                                </td>
+                                <td class = "align-items-center"> <a href = "{{upload.file.url}}" class = "sethov"> 
+                                    <svg  class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" clip-rule="evenodd"/></svg>
+                                </a></td>
+                                <td class = "align-items-center">
+                                <a href = "{% url 'deleteProjectFile' upload.id %}" class = "sethov">
+                                <svg  class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z" clip-rule="evenodd"></path></svg>
+                                </a> </td>
+                                
+
+
+                                </tr>
+                                 {% endfor %} {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mb-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+
+                            <div class="col">
+                                <h2 class="fs-5 fw-bold mb-0">Upload Project File </h2>
+                                <hr>
+                            </div>
+
+                            <form method="POST" enctype="multipart/form-data"> {% csrf_token %}  {{form.as_p}}
+                                
+                                <button class="btn btn-gray-800" id="basicAlert">Upload Project File </button>
+                                
+                            </form>
+                        </div>
+                    </div>
+                    <!--  -->
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    
+    <div class="col-12 col-xl-4">
+        <div class="col-12 px-0 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between border-bottom pb-3">
+                        <div>
+                            <div class="h6 mb-0 d-flex align-items-center">
+                                <svg class="icon icon-xs text-gray-500 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path></svg>                                Upcoming Events
+                            </div>
+                        </div>
+
+                    </div>
+                    {% if events.count == 0 %}
+                    <p class = "mt-2"> There are no upcoming events  </p>
+                    {% else %}
+                    {% for event in events %}
+                    <div class="d-flex align-items-center justify-content-between border-bottom py-3">
+                        <div>
+                            <div class="h6 mb-0 d-flex align-items-center">
+                                <svg class="icon icon-xs text-gray-500 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path></svg>                                {{event.name}}
+                            </div>
+                            <div class="small card-stats">
+                                {{event.date|date:"l"}}, {{event.date}}
+                                <!-- <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg> -->
+                            </div>
+                        </div>
+                        <div>
+                            <a href="#" class="d-flex align-items-center fw-bold">
+                                    {{event.time}}
+                                    <!-- <svg class="icon icon-xs text-gray-500 ms-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> -->
+                                </a>
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12 px-0 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header border-bottom d-flex align-items-center justify-content-between">
+                    <h2 class="fs-5 fw-bold mb-0">My Projects</h2>
+                    <a href="{% url 'supervisorall' %}" class="btn btn-sm btn-primary">See All</a>
+                </div>
+                <div class="card-body">
+                    <!-- Project 1 -->
+                    
+
+                    {% if projects.count == 0 %}
+                    <p class = "mt-2"> You have not uploaded any project topic </p>
+                    {% else %}
+
+                        {% for myp in projects|slice:":5" %}
+                        <a href="{% url 'supprojectinfo' myp.id %}" "> <div class="row mb-4 ">
+                            <div class="col-auto ">
+                                <svg class="icon icon-sm text-gray-500 " fill="currentColor " viewBox="0 0 20 20 " xmlns="http://www.w3.org/2000/svg "><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z "></path><path fill-rule="evenodd " d="M4 5a2 2 0 012-2
+                            3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z
+                            " clip-rule="evenodd "></path></svg>
+                            </div>
+                            <div class="col ">
+                                <div class="progress-wrapper ">
+                                    <div class="progress-info ">
+                                        <div class="h6 mb-0 "> {{myp.title}}</div>
+                                        <!-- <div class="small fw-bold text-gray-500 "><span>75 %</span></div> -->
+                                    </div>
+                                    <hr>
+                                   
+                                </div>
+                            </div>
+                        </div> </a>
+                        {% endfor %} {% endif %}
+
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
