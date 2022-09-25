@@ -192,8 +192,8 @@ EMAIL_HOST_PASSWORD = os.environ.get('HOST_PASSWORD')
 
 
 ######################
-CELERY_BROKER_URL =os.environ['REDIS_URL']
-CELERY_RESULT_BACKEND = "django-db"
+# CELERY_BROKER_URL =os.environ['REDIS_URL']
+# CELERY_RESULT_BACKEND = "django-db"
 # CELERY_ACCEPT_CONTENT = ['application/json']
 # CELERY_RESULT_SERIALIZER = 'json'
 # CELERY_TASK_SELEIALIZER = 'json'
