@@ -1924,4 +1924,3 @@ exports.offset = offset$1;
 exports.popperGenerator = popperGenerator;
 exports.popperOffsets = popperOffsets$1;
 exports.preventOverflow = preventOverflow$1;
-//# sourceMappingURL=popper.js.map
