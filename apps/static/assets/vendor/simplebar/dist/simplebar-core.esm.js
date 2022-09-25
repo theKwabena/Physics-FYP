@@ -886,4 +886,3 @@ SimpleBar.defaultOptions = {
 SimpleBar.instances = new WeakMap();
 
 export default SimpleBar;
-//# sourceMappingURL=simplebar-core.esm.js.map
