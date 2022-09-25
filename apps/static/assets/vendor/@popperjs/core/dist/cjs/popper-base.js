@@ -1066,4 +1066,3 @@ var createPopper = /*#__PURE__*/popperGenerator(); // eslint-disable-next-line i
 exports.createPopper = createPopper;
 exports.detectOverflow = detectOverflow;
 exports.popperGenerator = popperGenerator;
-//# sourceMappingURL=popper-base.js.map
