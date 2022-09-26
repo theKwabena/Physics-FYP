@@ -1375,3 +1375,4 @@ exports.createPopper = createPopper;
 exports.defaultModifiers = defaultModifiers;
 exports.detectOverflow = detectOverflow;
 exports.popperGenerator = popperGenerator;
+//# sourceMappingURL=popper-lite.js.map

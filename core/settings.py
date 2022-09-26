@@ -7,7 +7,7 @@ import dj_database_url
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False)
+    DEBUG=(bool, True)
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'supervisor',
     'notifications',
     'landing',
-    'django_filters'
+    'django_filters',
+    
     # 'projects',
     # 'users'
     # Enable the inner home (home) 
@@ -147,20 +148,35 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(CORE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(CORE_DIR, 'staticfiles')
+# STATIC_URL = '/static/'
 
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
+# # Extra places for collectstatic to find static files.
+# STATICFILES_DIRS = (
+#     os.path.join(CORE_DIR, 'apps/static'),
+# )
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = 'dtcph4ubu9tu9.cloudfront.net'
+
+AWS_LOCATION = 'static'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+STATICFILES_DIRS = [
     os.path.join(CORE_DIR, 'apps/static'),
-)
+]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# MEDIA_URL = '/media/'
 
-MEDIA_URL = '/media/'
-
-# Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# # Path where media is stored
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 USE_L10N = False
@@ -198,8 +214,8 @@ EMAIL_HOST_PASSWORD = os.environ.get('HOST_PASSWORD')
 
 
 ######################
-# CELERY_BROKER_URL =os.environ['REDIS_URL']
-# CELERY_RESULT_BACKEND = "django-db"
+CELERY_BROKER_URL =os.environ['REDIS_URL']
+CELERY_RESULT_BACKEND = "django-db"
 # CELERY_ACCEPT_CONTENT = ['application/json']
 # CELERY_RESULT_SERIALIZER = 'json'
 # CELERY_TASK_SELEIALIZER = 'json'

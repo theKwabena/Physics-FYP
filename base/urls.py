@@ -4,11 +4,11 @@ from .views import *
 
 
 urlpatterns = [
-    path('projects', home, name = 'projects'),
+    path('projects/', home, name = 'projects'),
     path('projects/<pk>/details/', projectdetail.as_view(), name = 'projectdetail'),
     path('projects/<int:id>/register/', studentUpdate, name = 'studentupdate' ),
     path('allprojects/',all_projects, name = 'portalallprojects' ),
-    path('projects/category/<str:cats>/all', category, name ='category'),
+    path('projects/category/<str:cats>/all/', category, name ='category'),
     path('search/', search, name = 'portalsearch'),
     path('pitch/', PitchTopic, name = 'pitchprojecttopic'),
     path('specializations/', specPage, name = 'specPage'),
