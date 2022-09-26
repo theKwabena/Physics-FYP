@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'notifications',
     'landing',
     'django_filters',
+    'storages'
     
     # 'projects',
     # 'users'
