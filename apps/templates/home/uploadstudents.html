@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %} {% block content %} {% block title %} Upload Student Data {% endblock %}
+{% extends "layouts/base.html" %} {% load static %}{% block content %} {% block title %} Upload Student Data {% endblock %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
     <div class="d-block mb-4 mb-md-0">
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
@@ -154,7 +154,7 @@
                 </div>
                 <div class="modal-body text-white">
                     <div class="py-3 text-center">
-                        <img src="{{ ASSETS_ROOT }}/img/illustrations/student-data-sample.png" href="#">
+                        <img src="{% static 'assets/img/illustrations/student-data-sample.png' %}" href="#">
                         <h2 class="h4 modal-title my-3">Sample student data view</h2>
                         <p>Kindly make sure student first and other names are separated by a comma as shown above.</p>
                     </div>

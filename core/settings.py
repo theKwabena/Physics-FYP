@@ -161,17 +161,21 @@ USE_TZ = True
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_CUSTOM_DOMAIN = 'dtcph4ubu9tu9.cloudfront.net'
-
 AWS_LOCATION = 'static'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
+
+STATIC_LOCATION = 'static'
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'core.storage_backends.StaticStorage'
+PUBLIC_MEDIA_LOCATION = 'media'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
 
 STATICFILES_DIRS = [
-    os.path.join(CORE_DIR, 'apps/static')
+    os.path.join(CORE_DIR, 'apps/static'),
+   'landing/static',
+   'base/static'
 ]
 
 # MEDIA_URL = '/media/'

@@ -1,5 +1,5 @@
 {% extends "layouts/stdbase.html" %}
-
+{% load static %}
 <div class="py-4">
     {% if student.project.exists %} {{student.project}} {% else %}
     <p> Your Selected Project Topic is Pending Approval </p>
@@ -277,7 +277,7 @@
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <!-- Avatar -->
-                                <img alt="Image placeholder" src="{{ ASSETS_ROOT }}/img/team/profile-picture-3.jpg" class="avatar-md rounded">
+                                <img alt="Image placeholder" src="{% static 'assets/img/team/profile-picture-3.jpg' %}" class="avatar-md rounded">
                             </div>
                             <div class="col ps-0 m-2">
                                 <div class="d-flex justify-content-between align-items-center">
