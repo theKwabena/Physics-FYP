@@ -200,9 +200,9 @@
 
 <script>
     const user_id = JSON.parse(document.getElementById('user-id').textContent);
-    console.log(user_id)
+    var ws_scheme = window.location.protocol == "https" ? "wss" : "ws";
     const send_notificationSocket = new WebSocket(
-        'ws://'
+        ws_scheme + '://'
         + window.location.host
         + '/ws/notification/'
     );

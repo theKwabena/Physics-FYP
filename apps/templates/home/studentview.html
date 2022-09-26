@@ -289,9 +289,9 @@
     const student_image = JSON.parse(document.getElementById('student-img').textContent);
     
     
-    
+    var ws_scheme = window.location.protocol == "https" ? "wss" : "ws";
     const chatSocket = new WebSocket(
-        'ws://'
+        ws_scheme + '://'
         + window.location.host
         + '/ws/chatroom/'
         + roomName
