@@ -7,7 +7,7 @@ import dj_database_url
 
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, True)
+    DEBUG=(bool, False)
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -171,6 +171,8 @@ STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 STATICFILES_DIRS = [
     os.path.join(CORE_DIR, 'apps/static'),
+    'landing/static',
+    'base/static'
 ]
 
 # MEDIA_URL = '/media/'
@@ -214,8 +216,8 @@ EMAIL_HOST_PASSWORD = os.environ.get('HOST_PASSWORD')
 
 
 ######################
-CELERY_BROKER_URL =os.environ['REDIS_URL']
-CELERY_RESULT_BACKEND = "django-db"
+# CELERY_BROKER_URL =os.environ['REDIS_URL']
+# CELERY_RESULT_BACKEND = "django-db"
 # CELERY_ACCEPT_CONTENT = ['application/json']
 # CELERY_RESULT_SERIALIZER = 'json'
 # CELERY_TASK_SELEIALIZER = 'json'
