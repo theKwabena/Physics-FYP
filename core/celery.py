@@ -14,9 +14,9 @@ app = Celery('core')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 #CELERY BEAT
-app.conf.beat_schedule = {
+# app.conf.beat_schedule = {
     
-}
+# }
 
 
 # Load task modules from all registered Django apps.
