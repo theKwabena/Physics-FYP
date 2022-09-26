@@ -309,7 +309,7 @@
     const supervisor_first_name = JSON.parse(document.getElementById('student-first_name').textContent);
     const supervisor_last_name = JSON.parse(document.getElementById('student-last_name').textContent);
     const supervisor_image = JSON.parse(document.getElementById('student-img').textContent);
-    var ws_scheme = window.location.protocol == "https" ? "wss" : "ws";
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     const chatSocket = new WebSocket(
         ws_scheme + '://'
         + window.location.host

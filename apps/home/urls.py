@@ -14,7 +14,7 @@ urlpatterns = [
     
     # path('supervisor/', views.supervisordash, name = 'supervisor' ),
     # path('supervisor/allprojects/', views.supallprojects, name = 'supervisorall'),
-    path('std/', views.stud, name='studentview'),
+    path('student/', views.stud, name='studentview'),
     # path('codcreate', views.codaddproject, name = 'codaddproject'),
     # path('supervisor/addproject', views.supaddproject, name = 'supaddproject'),
     # path('approve-student/<int:id>', views.supervisoraccept, name = 'supervisoraccept'),
