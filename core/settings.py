@@ -171,9 +171,7 @@ DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 STATICFILES_DIRS = [
-    os.path.join(CORE_DIR, 'apps/static'),
-    'landing/static',
-    'base/static'
+    os.path.join(CORE_DIR, 'apps/static')
 ]
 
 # MEDIA_URL = '/media/'
