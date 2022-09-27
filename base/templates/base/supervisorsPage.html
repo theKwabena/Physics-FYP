@@ -133,11 +133,11 @@
     <div class="box-container">
         {% for supervisor in supervisors %}
         
+        <a href = "{% url 'supervisorProjects' supervisor.first_name supervisor.other_names supervisor.id %}">
         
-        <a href = "{% url 'supervisorProjects' supervisor.first_name supervisor.other_names %}">   
         <div class="box">
             <img src="{{supervisor.supervisorimg.url}}" alt="">
-            <h3> {{supervisor.rank|title}} {{supervisor.first_name}} {{supervisor.other_names}} </h3>
+            <h3> {{supervisor.rank|title}}. {{supervisor.first_name}} {{supervisor.other_names}} </h3>
 
             <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt, earum!</p> -->
 

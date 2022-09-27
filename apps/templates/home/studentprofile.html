@@ -38,10 +38,9 @@
                     <p>{{user.project.title|slice:"0:40"}} {% if user.project.title|length > 40 %}...{% else %} {% endif%}</p>
                 </div>
                 <div class="col-md-6 mb-3 ">
-                    <span class="fw-bolder text-gray-500 "> Status</span>{% if student.project is None %}
-                    <p> No topic selected </p> {% elif student.project is not None and student.approved %}
+                    <span class="fw-bolder text-gray-500 "> Status</span>{% if user.approved %}
                     <p>Approved</p>
-                    {% elif student.project is not None and student.approved is False %}
+                    {% elif user.project is not None and user.approved is False %}
                     <p class="text-danger"> Pending Approval</span></p>
                     {% endif %}
 

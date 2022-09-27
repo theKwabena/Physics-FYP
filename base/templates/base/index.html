@@ -163,7 +163,7 @@
         <a href="{% url 'home' %}" class="logo"> <i class="fa-solid fa-bars-progress"></i> PHYSICS FYP </a>
     
         <nav class="navbar">
-            <a href="{% url 'home' %}" class = "fa-solid fa-house"> <b>HOME</b></a>
+            <a href="{% url 'projects' %}" class = "fa-solid fa-house"> <b>HOME</b></a>
             <a href="{% url 'portalallprojects' %}" class ="fa-solid fa-arrow-down-a-z"> <b>PROJECT TOPICS</b></a>
             <a href="{% url 'specPage' %}" class="fa-solid fa-rectangle-list"> <b>SPECIALIZATIONS</b></a>
         
@@ -300,8 +300,8 @@
                     <div>
                         
                    <img src="{{supervisor.supervisorimg.url}}" alt="">
-                    <h3>{{supervisor.first_name}} {{supervisor.other_names}} </h3>
-                    <p>{{supervisor.bio}}</p>
+            <h3> {{supervisor.rank|title}}. {{supervisor.first_name}} {{supervisor.other_names}} </h3>
+                   
                 </div>
                 </div>
             </a>

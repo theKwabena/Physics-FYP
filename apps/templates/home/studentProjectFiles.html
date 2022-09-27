@@ -95,6 +95,8 @@
                         
                         <!-- <div class="h5 fw-normal text-gray ">Tasks </div> -->       
                 </div>
+                {% if tasks.count == 0 %}
+                <p class ="mx-5 mt-3"> There are no tasks</p> {% else %}
                 {% for task in tasks %}
                 <span href="# " class="list-group-item list-group-item-action border-bottom ">
                     <div class="row align-items-center ">
@@ -111,7 +113,7 @@
                         </div>
                     </div>
                 </span>
-                {% endfor %}
+                {% endfor %} {% endif %}
             </div>
         </div>
         <div class="col-12 px-0 mb-4 ">
@@ -126,6 +128,9 @@
                         </div>
 
                     </div>
+                    {% if events.count == 0 %}
+                    <p class = "mt-2"> There are no upcoming events</p>
+                    {% else %}
                     {% for event in events %}
                     <div class="d-flex align-items-center justify-content-between border-bottom py-3 ">
                         <div>
@@ -148,7 +153,7 @@
                                 </a>
                         </div>
                     </div>
-                    {% endfor %}
+                    {% endfor %} {% endif %}
 
 
                 </div>
