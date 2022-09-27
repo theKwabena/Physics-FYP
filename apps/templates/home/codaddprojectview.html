@@ -6,7 +6,7 @@
 
 
 
-<form method="POST"> {% csrf_token %}
+<form method="POST" enctype="multipart/form-data"> {% csrf_token %}
      {{form.as_p}}
     <!-- <div class="mb-4">
         <label for="email">Project Title</label>

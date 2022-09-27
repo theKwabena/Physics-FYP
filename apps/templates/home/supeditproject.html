@@ -38,7 +38,7 @@
                                 <h2 class="fs-5 fw-bold mb-0">Edit project details</h2>
                                 <hr>
                             </div>
-                            <form method="POST"> {% csrf_token %} {% if messages %}
+                            <form method="POST" enctype="multipart/form-data"> {% csrf_token %} {% if messages %}
                                 <ul class='message'>
                                     {% for message in messages %}
                                     <li {% if message.tags %} class=" {{message.tags}} " {% endif %}> {{message}}</li>
