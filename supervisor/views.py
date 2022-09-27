@@ -497,3 +497,10 @@ def supervisorChatRoom(request):
     }
     
     return render(request, 'home/supervisorChat.html', context)
+
+
+
+def supdeleteProject(request, id):
+    project = Project.objects.get(id=id)
+    project.delete()
+    return redirect('supervisorall')

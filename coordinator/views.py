@@ -374,7 +374,7 @@ def supervisor_details(request, id):
     
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles = ['Coordinator']) 
+@allowed_users(allowed_roles = ['Coordinator', 'Supervisor']) 
 def coddelstudent(request,id):
     student = Student.objects.get(id = id)
     student.delete()
@@ -403,7 +403,7 @@ def deleteproject(request, id):
             })
     send_supervisor(project.id,request.user.id, 'Coordinator', email_subject,  email_body, message)
     project.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return redirect('allprojects')
 
 
 

@@ -15,7 +15,7 @@ urlpatterns = [
     path('supervisor-decline/<int:id>/', views.supervisordecline, name = 'supervisordecline'),
     path('supervisor/mark-task-as-complete/<int:id>/', views.marktaskcomplete, name = 'marktaskcomplete'),
     path('supervisor/delete-task/<int:id>/', views.deleteTask, name = 'deletetask'),
-    
+    path('supervisor/projects/delete/<int:id>,', views.supdeleteProject, name = 'supdeleteproject'),
     path('supervisor/project/info/<int:id>/', views.suppjectinfo, name = 'supprojectinfo'),
     path('supervisor/project/info/edit/<int:id>/', views.supeditproject, name = 'supeditproject'),
     path('supervisor/project/info/delstudent/<int:id>/', views.supdelfrompject, name = 'supdeletestudentfromproject'),

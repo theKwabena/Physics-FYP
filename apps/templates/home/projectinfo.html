@@ -60,10 +60,31 @@
 
             <div class="mt-0 ">
                 <a href="{% url 'codeditproject' project.id %}"><button class="btn btn-gray-800 mt-0 animate-up-2 ">Edit Project </button> </a>
-                <button class="btn btn-danger  mt-0 animate-up-2">Delete Project</button>
+                <button class="btn btn-danger  mt-0 animate-up-2" data-bs-toggle="modal" data-bs-target="#modal-default{{project.id}}">Delete Project</button>
+                
             </div>
 
 
+        </div>
+        
+        <div class="modal fade" id="modal-default{{project.id}}" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="h6 modal-title">Confirm Project Delete </h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align: center;">
+                        <p class='lead'> Are you sure you want to  <span class="text-danger">delete </span> <b>{{project.title}}</b> by <span class="text-danger"> {{project.supervisor.first_name}} {{project.supervisor.other_names}}</span> </p>
+                        <p>All students enrolled in this project will be able to select other projects, All files related to this project will be deleted. This action cannot be reversed</p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'deleteproject' project.id %}"> <button type="button" class="btn btn-danger">Delete</button> </a>
+                        <button type="button" class="btn btn-link text-gray-600 ms-auto" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </div>
 </div>
     </div>
