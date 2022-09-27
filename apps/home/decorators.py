@@ -15,7 +15,7 @@ def unauthenticated_user(view_func):
 def registeredstudent(view_func):
     def wrapper_func(request, *args, **kwargs):
         if request.user.student.project is None:
-            return redirect('Home')
+            return redirect('projects')
         else:
             return view_func(request, *args, **kwargs)
     return wrapper_func

@@ -146,8 +146,8 @@ def supervisorsPage(request):
     
     return render(request, 'base/supervisorsPage.html', context)
 
-def sortbysuperv(request, fname, onames):
-    supervName = Supervisor.objects.get(first_name = fname, other_names = onames)
+def sortbysuperv(request, fname, onames, id):
+    supervName = Supervisor.objects.get(first_name = fname, other_names = onames, id =id)
     projects = Project.objects.filter(supervisor = supervName.id, approved = True)
     pjectFilter = ProjectFilter(request.GET, queryset = projects)
     projects = pjectFilter.qs

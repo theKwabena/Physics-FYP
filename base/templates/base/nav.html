@@ -1,7 +1,7 @@
 <!-- header section starts  -->
 <header class="header">
 
-    <a href="#" class="logo"> <i class="fa-solid fa-bars-progress"></i> PHYSICS FYP </a>
+    <a href="{% url 'home' %}" class="logo"> <i class="fa-solid fa-bars-progress"></i> PHYSICS FYP </a>
 
     <nav class="navbar">
         <a href="{% url 'home' %}" class = "fa-solid fa-house"> <b>HOME</b></a>
@@ -17,7 +17,8 @@
         <div class="fas fa-bars" id="menu-btn"></div>
         <div class="fas fa-search" id="search-btn"></div>
         <div class="fas fa-shopping-cart" id="cart-btn"></div>
-        <div class="fas fa-user" id="login-btn"></div>
+        <div class="fas fa-user" id="login-btn" style="
+        display: none;"></div>
     </div>
 
     <form  class="search-form" method = 'POST' action = "{% url 'portalsearch' %}" name = 'navform'>

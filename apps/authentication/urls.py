@@ -4,6 +4,7 @@ from .views import login_view, register_user, logoutUser
 from django.contrib.auth.views import LogoutView
 from landing import views as bs
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('login/', login_view, name="login"),
@@ -16,7 +17,7 @@ urlpatterns = [
     path('activate-supervisor/<uid64>/<token>/<email>/', views.activate_supervisor, name = 'activate-supervisor'),
     path('verifysupervisoremail/', views.verifySupervisor, name = 'verifysupervisor'),
     path('profile/settings/change-password/',views.PasswordChange.as_view(template_name = 'accounts/changepassword.html'), name = 'change-password'),
-    path('password-change-success/', views.passwordSuccess, name = 'password-success')
-    
-    
+    path('password-change-success/', views.passwordSuccess, name = 'password-success'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="main/password/password_reset_confirm.html"), name='password_reset_confirm'),
+    path('registration/unverified/change-email/', views.verifyNewSupervisor, name = 'newsupervisorunverified')
 ]

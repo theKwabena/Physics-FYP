@@ -22,7 +22,26 @@ class LoginForm(forms.Form):
             }
         ))
 
-
+class NoEmailForm(forms.ModelForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": "Please email your valid and active email",
+                "class": "form-control"
+            }
+        ))
+    
+    class Meta:
+        model = User
+        fields = ['email'] 
+        
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("An account with this email address exists")
+        return email
+    
+    
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(
         widget=forms.TextInput(
@@ -73,7 +92,20 @@ class SignUpForm(UserCreationForm):
        if User.objects.filter(email=email).exists():
             raise ValidationError("An account with this email address exists")
        return email
-   
+
+
+class UserExistForm(forms.ModelForm):
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Username",
+                "class": "form-control"
+            }
+        ))
+     
+    class Meta:
+        model = User
+        fields = ['username'] 
    
    
 class SupervisorEmailVerificationForm(forms.ModelForm):

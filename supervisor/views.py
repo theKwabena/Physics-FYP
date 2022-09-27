@@ -30,7 +30,6 @@ from coordinator.decorators import verificationRequired
 
 # Create your views here.
 @login_required(login_url='login')
-@incompleteRegistration
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
 def supervisordash(request):
     tsupervisor = request.user.supervisor
@@ -42,9 +41,7 @@ def supervisordash(request):
     selected = Project.objects.filter(supervisor = request.user.supervisor, selected = True)
     all_notifs = Notifications.objects.filter(receiver = request.user).filter(forcoordinator=False).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(forcoordinator = False).filter(read = False) 
-    print(request.user.supervisor.rank)
     
-    print(request.user.groups.all())
     
     
     # selected = Project.objects.filter(supervisor = tsupervisor).filter(approve =True)
@@ -68,7 +65,6 @@ def supervisordash(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 @verificationRequired
 def supaddproject(request):
     form = approveForm(request.POST or None)
@@ -116,7 +112,6 @@ def supaddproject(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 def supaddtask(request):
     tsupervisor = request.user.supervisor
     sttasks = Task.objects.filter(supervisor = tsupervisor).order_by('completed').distinct()
@@ -152,7 +147,6 @@ def supaddtask(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 def marktaskcomplete(request, id):
     task = Task.objects.get(id=id)
     task.completed = True
@@ -170,7 +164,6 @@ def deleteTask(request, id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 def supallprojects(request):
     tsupervisor = request.user.supervisor
     stprojects = Project.objects.filter(supervisor = request.user.supervisor)
@@ -202,7 +195,6 @@ def supallprojects(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 @verificationRequired
 def supervisoraccept(request,id):
     student = Student.objects.get(id=id)
@@ -230,7 +222,6 @@ def supervisoraccept(request,id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 @verificationRequired
 def supervisordecline(request,id):
     student = Student.objects.get(id=id)
@@ -259,7 +250,6 @@ def supervisordecline(request,id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 @verificationRequired
 def suppjectinfo(request, id):
     supervisor = request.user.supervisor
@@ -285,7 +275,6 @@ def suppjectinfo(request, id):
     
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 @verificationRequired    
 def supeditproject(request,id):
     project = Project.objects.get(id=id)
@@ -319,7 +308,6 @@ def supeditproject(request,id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration 
 @verificationRequired
 def supdelfrompject(request,id):
     student = Student.objects.get(id=id)
@@ -344,7 +332,6 @@ def supdelfrompject(request,id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration 
 def supstudents(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).filter(forcoordinator=False).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(forcoordinator = False).filter(read = False) 
@@ -369,7 +356,6 @@ def supstudents(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration 
 def supstddetails(request, id):
     student = Student.objects.get(id=id)
     all_notifs = Notifications.objects.filter(receiver = request.user).filter(forcoordinator=False).order_by('-datesent')
@@ -390,7 +376,6 @@ def supstddetails(request, id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 def supervisorPitchedTopics(request):
     pitchedTopics = pitchedTopic.objects.all()
     p = Paginator(pitchedTopics, 10)
@@ -412,7 +397,6 @@ def supervisorPitchedTopics(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration 
 @verificationRequired
 def supervisorApprovePitched(request, id):
     all_notifs = Notifications.objects.filter(receiver = request.user).filter(forcoordinator=False).order_by('-datesent')
@@ -451,7 +435,6 @@ def supervisorApprovePitched(request, id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 def supervisorProjectFiles(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).filter(forcoordinator=False).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(forcoordinator = False).filter(read = False) 
@@ -476,14 +459,12 @@ def supervisorProjectFiles(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 def deleteProjectFile(request,id):
     ProjectFile.objects.get(id=id).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration
 def submittedReport(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).filter(forcoordinator=False).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(forcoordinator = False).filter(read = False) 
@@ -492,7 +473,6 @@ def submittedReport(request):
     reports = ProjectReport.objects.filter(project__id__in = projects.all())
     reportFilter = ReportFilter(request.GET, queryset = reports, request= request)
     reports = reportFilter.qs
-    print(reports)
     
     
     context = {
@@ -507,7 +487,6 @@ def submittedReport(request):
     
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
-@incompleteRegistration 
 @verificationRequired   
 def supervisorChatRoom(request):
     supervisor = request.user.supervisor

@@ -13,7 +13,7 @@ urlpatterns = [
     path('pitch/', PitchTopic, name = 'pitchprojecttopic'),
     path('specializations/', specPage, name = 'specPage'),
     path('supervisors/', supervisorsPage, name = 'supervPage'),
-    path('supervisors/<str:fname>-<str:onames>/all/', sortbysuperv, name = 'supervisorProjects')
+    path('supervisors/<str:fname>-<str:onames>/<int:id>/all/', sortbysuperv, name = 'supervisorProjects')
     # path('tw/', twtry, name = 'tailwind'),
     # path('appr/<int:id>', approve, name = 'approve')
 ]

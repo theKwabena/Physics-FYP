@@ -125,7 +125,7 @@ def send_supervisor(project_id, sender, sender_type , subject, email_body, messa
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             'supervisor'+ str(project.supervisor.id),
-            {   
+            {    
             'type': 'send_notifications',
             'notiftype': 'Student',
             'sender' : str(sender),

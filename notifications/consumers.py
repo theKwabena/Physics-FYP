@@ -230,7 +230,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         data = json.loads(text_data)
-        print(data)
         message = data['message']
         senderFname= data['sender_first_name']
         senderLname = data['sender_last_name']

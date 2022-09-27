@@ -46,8 +46,17 @@ def incompleteRegistration(view_func):
             else:
                 return view_func(request, *args, **kwargs)
         except Exception as e:
-            print(e)
-            return redirect('regStep2')
+            return redirect('register')
+    return wrapper_func
+
+
+def noUser(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        try:
+            request.user
+            return view_func(request, *args, **kwargs)
+        except Exception as e:
+            return redirect('register')
     return wrapper_func
 
 

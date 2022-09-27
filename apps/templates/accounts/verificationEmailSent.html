@@ -5,32 +5,106 @@
 {% block title %} Forgot Password {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<style>
+    #progressbody{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 70px;
+        overflow: hidden;
+        margin: 0;
+    }
+    .progress-container1{
+        text-align: center;
+    
+    }
+    .progress-container{
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 10px;
+        max-width: 100%;
+        width: 300px;
+        z-index:1;
+    
+    }
+    .progress-container::before{
+        content: '';
+        background-color: #1F2937;
+        position: absolute;
+        opacity: 0.6;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 4px;
+        width: 100%;
+        z-index:-1;
+        
+    }
+    .progress{
+        background-color: #1F2937;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 4px;
+        width: 00%;
+        z-index: -1;
+        transition: 0.4s ease;
+    }
+    .circle{
+    background-color: #fff;
+    color:rgb(0, 0, 0);
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #efefef;
+    
+    transition: 0.4s ease;
+    }
+    .circle.active{
+        background-color:#1F2937;
+        color : white;
+    }
+
+</style>
+{% endblock stylesheets %}
 
 {% block content %}
 
     <main data-background-lg="{% static 'assets/img/illustrations/hero-bg.jpg' %}">
         <section class="vh-lg-100 mt-5 mt-lg-0 bg-soft d-flex align-items-center">
             <div class="container">
-                <div class="row justify-content-center form-bg-image">
-                    <!-- <p class="text-center"><a href="./sign-in.html" class="d-flex align-items-center justify-content-center">
-                        <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
-                        Back to log in
-                        </a>
-                    </p> -->
-                              
+            <div class="row justify-content-center form-bg-image" data-background-lg="{% static 'assets/img/illustrations/bgimage.svg' %}">
                     <div class="col-12 d-flex align-items-center justify-content-center">
                         <div class="signin-inner my-3 my-lg-0 bg-white shadow border-0 rounded p-4 p-lg-5 w-100 fmxw-500">
+                            <div class="text-center text-md-center mb-2 mt-md-0">
+                                <h4 class="mb-0 h4">
+                                    Physics FYP Registration
+                                </h4>
+                                <p>
+                                    {% include 'accounts/progress3.html' %}
+                                </p>
+                       <p class = "mt-0"> Verification Email Sent</p>   
+                                
+                            </div>
                             
+
                             
                             <img src = "{% static 'assets/img/illustrations/Emailsent.png' %}">
                           
                            
-                            
-                                        
-                       <p> A verification email has been sent to your email address, please complete your registration by verifying your email</p>   
-                       <p class = 'danger'>Didn't get the email? <b><a href="{% url 'regStep3' %}"> Resend Email </a>  </b> | <b><a href="{% url 'verifysupervisor' %}"> Change Email </b> </p>            
-                        </div>
+                        <div class="text-center text-md-center mb-0 mt-md-0">   
+                       <p> An email has been sent to your email address provided, The email contains a <b>verification link</b>. Please complete your registration by verifying your email</p>   
+                                     
+                       <p><span class = 'text-danger'>Didn't get an email?</span> <b><a href="{% url 'regStep3' %}"> Resend Email </a>  </b> | <b><a href="{% url 'newsupervisorunverified' %}"> Change Email </b> </p>            
+                    </div>    
+                    </div>
                     </div>
                 </div>
             </div>

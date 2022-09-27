@@ -14,6 +14,75 @@
         z-index: 5 !important;
       }
 </style>
+
+<style>
+    #progressbody{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 70px;
+        overflow: hidden;
+        margin: 0;
+    }
+    .progress-container1{
+        text-align: center;
+    
+    }
+    .progress-container{
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 30px;
+        max-width: 100%;
+        width: 300px;
+        z-index:1;
+    
+    }
+    .progress-container::before{
+        content: '';
+        background-color: #1F2937;
+        position: absolute;
+        opacity: 0.6;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 4px;
+        width: 100%;
+        z-index:-1;
+        
+    }
+    .progress{
+        background-color: #1F2937;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 4px;
+        width: 00%;
+        z-index: -1;
+        transition: 0.4s ease;
+    }
+    .circle{
+    background-color: #fff;
+    color:rgb(0, 0, 0);
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #efefef;
+    
+    transition: 0.4s ease;
+    }
+    
+    .circle.active{
+        background-color:#1F2937;
+        color : white;
+    }
+
+</style>
 {% endblock stylesheets %} {% block content %}
 
 <main data-background-lg="{% static 'assets/img/illustrations/hero-bg.jpg' %}">
@@ -25,7 +94,7 @@
                     <div class="bg-white shadow border-0 rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                         <div class="text-center text-md-center mb-2 mt-md-0">
                             <h4 class="mb-0 h4">
-                                Final Year Project Registration
+                                Physics FYP Registration
                             </h4>
                             <p>
                                 <!-- {% if msg %} {{ msg | safe }} {% else %} Enter your details -->
@@ -36,7 +105,7 @@
                             </p>
                         </div>
 
-                        
+                        {% include 'accounts/progressbar.html' %}
                         <form method = 'POST'  class="mt-1 ">
                             
                             {% csrf_token %}
@@ -141,7 +210,7 @@
                                 </div>
                             
                             <div class="d-grid ">
-                                <button type="Submit " class="btn btn-gray-800 ">Register</button>
+                                <button type="Submit " class="btn btn-gray-800" id = "nextBtn">Register</button>
                             </div>
                         </form>
                         <br />
@@ -229,4 +298,7 @@ togglePass2.addEventListener('click', function (e) {
 
 
 </script> 
+
+
+
 {% endblock javascripts %}

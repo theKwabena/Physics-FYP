@@ -31,25 +31,6 @@ from django.core.paginator import Paginator
 # from base.models import *
 # from base.forms import *
 
-    
-
-
-def sedt(request):
-    return render(request, 'home/settings.html')
-
-
-# def supsidebar(request, id):
-#     tsupervisor = get_object_or_404(Supervisor, id=id)
-#     someid = tsupervisor.id
-#     return redirect('superv')
-
-
-
-
-
-
-
-
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles = ['Student'])
@@ -66,7 +47,6 @@ def stud(request):
     chatmessages = ChatMessage.objects.filter(project = student.project)
     if student.project in Project.objects.all():
         mates = Student.objects.filter(project_id =student.project.id ).exclude(id = student.id)
-        print (mates)
     else:
         mates = []
     
@@ -87,6 +67,10 @@ def stud(request):
     
     return render(request, 'home/studentview.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student'])
+@registeredstudent
+@approvalrequired
 def studentProjectFiles(request):
     student = request.user.student
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
@@ -142,9 +126,8 @@ def export_data(request):
                 print(i.first_name,x)
     
     rows = Project.objects.all().values_list('id','title', 'supervisor')
-    print(rows)
+    
     for row in rows:
-        print(row[0])
         row_num +=1
         for student in Student.objects.all():
             if student.project is not None and student.project.id == row[0]:
@@ -154,8 +137,8 @@ def export_data(request):
     
     return response   
 
-
 @login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student'])
 def send_student_activation_email(request):
     msg = None
     img_sent = None
@@ -223,7 +206,8 @@ def activate_student(request, uid64, token, email):
 
 
 
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student', 'Coordinator', 'Supervisor'])
 def user_profile_settings(request):
     if request.user.groups.filter(name='Supervisor').exists() or request.user.groups.filter(name='Coordinator').exists() :
         supervisor = Supervisor.objects.get(user=request.user)
@@ -269,7 +253,10 @@ def user_profile_settings(request):
             'unread': unread,
         }
         return render(request, 'home/studentprofile.html', context)
-        
+ 
+ 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])       
 def supervisorVerification(request):
     current_site = get_current_site(request)
     email_subject = 'Activate Your Physics FYP Account'
@@ -283,7 +270,10 @@ def supervisorVerification(request):
     send_verification_email.delay(subject = email_subject, body = email_body,  recipient = request.user.email)
     time.sleep(3)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student'])   
 def sendStudentVerificationEmail(request):
     current_site = get_current_site(request)
     email_subject = 'Activate Your Physics FYP Account'
@@ -297,7 +287,10 @@ def sendStudentVerificationEmail(request):
     send_verification_email.delay(subject = email_subject, body = email_body,  recipient = request.user.email)
     time.sleep(3)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-   
+ 
+ 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student', 'Coordinator', 'Supervisor'])  
 def emailchange(request,user):
     user = request.user
     try:
@@ -316,11 +309,10 @@ def emailchange(request,user):
     
     
 def ideaSent(request):
-    
-    
     return render(request, 'home/ideasent.html')
 
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student','Coordinator', 'Supervisor'])
 def allnotifications(request, user):
     
     sup_id = request.user.id
@@ -343,19 +335,27 @@ def allnotifications(request, user):
         return render(request, 'home/notifications.html', context)
     except Exception as e:
         return render(request, 'home/studentNotifications.html', context)
-        
+ 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student', 'Coordinator', 'Supervisor'])       
 def deleteNotification(request, id):
     notification = Notifications.objects.get(id=id)
     notification.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student', 'Coordinator', 'Supervisor'])  
 def delete_for_user(request, id):
     notification = Notifications.objects.filter(receiver_id = id).filter(forcoordinator = False)
     notification.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student'])
+@registeredstudent
+@approvalrequired 
 def studentReport(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -376,16 +376,19 @@ def studentReport(request):
         'events' : events,
         'uploads' : uploads
     }
-    
     return render(request, 'home/submitReport.html', context)
 
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student', 'Supervisor'])  
+@registeredstudent
+@approvalrequired
 def deleteReport(request,id):
     ProjectReport.objects.get(id=id).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Student', 'Coordinator', 'Supervisor'])  
 def deleteAccount(request):
     request.user.delete()
     return redirect('Home')

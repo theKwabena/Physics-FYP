@@ -59,6 +59,8 @@ def coordinatordash(request):
     }
     return render(request, 'home/dashboard.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 @verificationRequired
 def codallprojects(request):
     # projects= Project.objects.all().order_by('-date_updated')
@@ -89,6 +91,8 @@ def codallprojects(request):
     }
     return render(request, 'home/allprojects.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codshowallprojects(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -116,6 +120,8 @@ def codshowallprojects(request):
     return render(request, 'home/allprojects.html', context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codaddproject(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -147,6 +153,8 @@ def codaddproject(request):
     return render(request, 'home/codaddprojectview.html', context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codpjectinfo(request, id):
     project = Project.objects.get(id = id)
     students = Student.objects.filter(project_id = project.id)
@@ -163,6 +171,8 @@ def codpjectinfo(request, id):
     return render(request, 'home/projectinfo.html', context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codapprovestudent(request,id):
     student = Student.objects.get(id=id)
     project = Project.objects.get(id = student.project.id)
@@ -173,6 +183,8 @@ def codapprovestudent(request,id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codeditproject(request,id):
     project = Project.objects.get(id=id)
     form = editForm(request.POST or None, instance = project)
@@ -197,6 +209,8 @@ def codeditproject(request,id):
     
     return render(request, 'home/codeditproject.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def coddelfrompject(request,id):
     student = Student.objects.get(id=id)
     pid = student.project.id
@@ -207,7 +221,10 @@ def coddelfrompject(request,id):
     project.occupied -=1
     project.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
-    
+ 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator'])    
 def coordinatorapprove(request, id):
     project = Project.objects.get(id=id)
     supervisor = Supervisor.objects.get(id = request.user.supervisor.id)
@@ -229,6 +246,8 @@ def coordinatorapprove(request, id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def coordinatordecline(request,id):
     project = Project.objects.get(id=id)
     supervisor = Supervisor.objects.get(id = project.supervisor.id)
@@ -250,6 +269,10 @@ def coordinatordecline(request,id):
     project.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codallstudents(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -275,6 +298,10 @@ def codallstudents(request):
     }
     return render(request, 'home/allstudents.html', context)
 
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codallstudentsshow(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -296,6 +323,10 @@ def codallstudentsshow(request):
     }
     return render(request, 'home/allstudents.html', context)
 
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def all_supervisors(request):
     supervisors = Supervisor.objects.all()
     supervisorFilter = SupervisorFilter(request.GET, queryset =supervisors)
@@ -316,6 +347,10 @@ def all_supervisors(request):
     
     return render(request, 'home/allsupervisors.html', context)
 
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def supervisor_details(request, id):
      supervisor = Supervisor.objects.get(id=id)
      project = Project.objects.filter(supervisor = supervisor)
@@ -337,11 +372,17 @@ def supervisor_details(request, id):
      return render (request, 'home/supervisordetails.html', context)
     
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def coddelstudent(request,id):
     student = Student.objects.get(id = id)
     student.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    
+ 
+ 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator'])    
 def deleteproject(request, id):
     project = Project.objects.get(id=id)
     supervisor = Supervisor.objects.get(id = project.supervisor.id)
@@ -366,6 +407,8 @@ def deleteproject(request, id):
 
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def all_events(request):
     events = Event.objects.all()
     s = Paginator(events,10)
@@ -386,6 +429,10 @@ def all_events(request):
     
     return render(request, 'home/events.html', context)
 
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def edit_event(request, id):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -402,12 +449,20 @@ def edit_event(request, id):
     }
     return render(request, 'home/addevent.html', context)
 
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def delete_event(request, id):
     event = Event.objects.get(id=id)
     event.delete()
     
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def migrateData(request,id):
     
     file = studentData.objects.get(id=id)
@@ -426,6 +481,8 @@ def migrateData(request,id):
     return render(request, 'home/studentdata.html', {'data': data, 'file': file})
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def uploadedData(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -435,7 +492,6 @@ def uploadedData(request):
         if form.is_valid():
             n = studentData.objects.create(file = request.FILES['file'])
             
-            print (n.pk)
             # Redirect to the document list after POST
             return redirect(migrateData, n.pk)
     else:
@@ -450,6 +506,8 @@ def uploadedData(request):
 
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codstudentdetails(request, id):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -476,6 +534,8 @@ def test(request):
     return HttpResponse('Done')
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def finished(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -493,6 +553,9 @@ def finished(request):
     }
     return render(request, 'home/finished.html', context)
 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def search(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -525,6 +588,8 @@ def search(request):
     
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def codNotifications(request):
     sup_id = request.user.id
     notifs = Notifications.objects.filter(receiver = request.user, forcoordinator = True).order_by('datesent')
@@ -549,6 +614,8 @@ def codNotifications(request):
 
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def addSpecialization(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)

@@ -2,6 +2,8 @@ from dataclasses import field, fields
 from faulthandler import disable
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 
 from portal.models import Project, Event, ProjectReport, Specialization, Student, pitchedTopic, studentData, Task, ProjectFile, Supervisor
 
@@ -215,6 +217,11 @@ class EmailVerificationForm(forms.ModelForm):
         model = Student
         fields = ['email']  
         
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("An account with this email address exists")
+        return email
         
         
 class PitchedForm(forms.ModelForm):

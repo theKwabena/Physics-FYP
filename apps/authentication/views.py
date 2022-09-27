@@ -9,7 +9,7 @@ from django.contrib.auth.views import PasswordChangeView, PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm, SignUpForm, SupervisorEmailVerificationForm, PasswordChangingForm
+from .forms import LoginForm, SignUpForm, SupervisorEmailVerificationForm, PasswordChangingForm, UserExistForm, NoEmailForm
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
@@ -25,6 +25,7 @@ from django.template.loader import render_to_string
 from notifications.tasks import send_verification_email
 from django.utils.decorators import method_decorator
 from coordinator.decorators import verificationRequired
+from .decorators import noUser, incompleteRegistration
 
 
 
@@ -48,7 +49,13 @@ def login_view(request):
                 if user.groups.filter(name = 'Coordinator'):
                     return redirect('coordinator')
                 elif user.groups.filter(name = 'Supervisor'):
-                    return redirect('supervisor')
+                    try:
+                        request.GET['next']
+                        url = request.GET['next']
+                        return redirect(url)
+                    except Exception as e:   
+                        return redirect('supervisor')
+                
                 if user.groups.filter(name = 'Student'):
                     try:
                         if 'projects' in request.GET['next']:
@@ -63,6 +70,8 @@ def login_view(request):
                         else:
                             return redirect('studentview')
                 else:   
+                    return redirect('regStep2')
+                if not user.groups.filter(name = 'Coordinator') and not user.groups.filter(name = 'Supervisor') and not user.groups.filter(name = 'Student'):
                     return redirect('regStep2')
             else:
                 msg = 'Check username and password and try again'
@@ -100,6 +109,8 @@ def register_user(request):
     }
     return render(request, 'accounts/register.html', context)
 
+
+@noUser
 def registerStep2(request):
     user = request.user
     if request.method == "POST":
@@ -126,7 +137,7 @@ def registerStep2(request):
        # login(request,  user = authenticate(request, username =form.cleaned_data['username'], password = form.cleaned_data['password1']))
     return render(request, 'accounts/regis2.html')
 
-
+@incompleteRegistration
 def sendVerificationEmail(request):
     current_site = get_current_site(request)
     email_subject = 'Activate Your Physics FYP Account'
@@ -170,11 +181,10 @@ def activate_supervisor(request, uid64, token, email):
         send_verification_email.delay(subject = email_subject, body = email_body,  recipient = supervisor.email)
         messages.add_message(request, messages.SUCCESS, 'Email Verified Successfully')
         return redirect ('verifysupervisor')
-    
-    
     return render(request, 'home/activation_failed.html', {'user': user,})
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
 def verifySupervisor(request):
     msg = None
     img_sent = None
@@ -210,12 +220,49 @@ def verifySupervisor(request):
     return render(request, 'home/emailverification.html', context)
     
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
+def verifyNewSupervisor(request):
+    # msg = None
+    # img_sent = None
+    img_verified = None
+    form = SupervisorEmailVerificationForm(request.POST or None)
+    supervisor = Supervisor.objects.get(user = request.user)
+    if supervisor.verified is False:
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            current_site = get_current_site(request)
+            email_subject = 'Activate Your Physics FYP Account'
+            email_body = render_to_string('notifications/supervisorConfirm.html', {
+                'user': request.user,
+                'domain': current_site,
+                'uid': urlsafe_base64_encode(force_bytes(request.user.id)),
+                'token' : generate_supervisor_token.make_token(request.user),
+                'email' :email 
+            })
+            send_verification_email.delay(subject = email_subject, body = email_body,  recipient = email)
+            return render(request, 'accounts/verificationEmailSent.html')
+    elif supervisor.verified is True:
+        msg = "Your account has been verified successfully."
+        img_verified = "/img/illustrations/verified.png"
+        
+        
+    context = {
+        'form': form,
+        'img2' : img_verified
+    }
+    return render(request, 'home/emailverification.html', context)
+
+
+
 def logoutUser(request):
     logout(request)
     return redirect('login')
 
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles = ['Coordinator']) 
 def migratestudents(request, id):
     file = studentData.objects.get(id=id)
     
@@ -292,3 +339,22 @@ def passwordSuccess(request):
         'img1': img_sent,
     }
     return render(request, 'home/emailverification.html', context)
+
+
+
+# def forgotPassword(request):
+#     form = UserExistForm(request.POST or None)
+    
+#     if form.is_valid():
+#         user = form.cleaned_data['username']
+#         User.objects.get(username = user)
+#         if user.email:
+#             return redirect ('password_reset_confirm')
+#         else:
+#             return d
+        
+        
+# def noEmailPassword(request):
+#     form = NoEmailForm(request.POST or None)
+#     if form.is_valid():
+#         return redirect ('password_rest_confirm')
