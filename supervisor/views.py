@@ -67,7 +67,7 @@ def supervisordash(request):
 @allowed_users(allowed_roles = ['Supervisor', 'Coordinator'])
 @verificationRequired
 def supaddproject(request):
-    form = approveForm(request.POST or None)
+    form = approveForm(request.POST or None, request.FILES or None)
     projects = Project.objects.filter(supervisor = request.user.supervisor)
     events = Event.objects.all().order_by('-date')
     suprojects = Project.objects.filter(supervisor = request.user.supervisor)
@@ -281,7 +281,7 @@ def supeditproject(request,id):
     projectFiles = ProjectFile.objects.filter(project = project)
     events= Event.objects.all()
 
-    form = editForm(request.POST or None, instance = project)
+    form = editForm(request.POST or None,request.FILES or None, instance = project)
     students = Student.objects.filter(project_id = project.id)
     all_notifs = Notifications.objects.filter(receiver = request.user).filter(forcoordinator=False).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(forcoordinator = False).filter(read = False) 

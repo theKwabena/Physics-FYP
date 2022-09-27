@@ -1,5 +1,6 @@
 import json
 import datetime as dt
+import time
 from csv import reader
 import pandas as pd
 from django import template
@@ -125,7 +126,7 @@ def codshowallprojects(request):
 def codaddproject(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
-    form = approveForm(request.POST or None)  
+    form = approveForm(request.POST or None, request.FILES or None)  
     allstudent = Student.objects.all()
     projects= Project.objects.all().order_by('-date_updated')
     supervisors = Supervisor.objects.all()
@@ -187,7 +188,7 @@ def codapprovestudent(request,id):
 @allowed_users(allowed_roles = ['Coordinator']) 
 def codeditproject(request,id):
     project = Project.objects.get(id=id)
-    form = editForm(request.POST or None, instance = project)
+    form = editForm(request.POST or None, request.FILES or None,instance = project)
     students = Student.objects.filter(project_id = project.id)
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
@@ -620,7 +621,7 @@ def addSpecialization(request):
     all_notifs = Notifications.objects.filter(receiver = request.user).order_by('-datesent')
     unread = Notifications.objects.filter(receiver =request.user).filter(read = False)
     events = Event.objects.all().order_by('-date')
-    form = SpecializationForm(request.POST or None)
+    form = SpecializationForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save()
         return redirect('coordinator')
