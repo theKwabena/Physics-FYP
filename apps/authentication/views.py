@@ -54,6 +54,7 @@ def login_view(request):
                         url = request.GET['next']
                         return redirect(url)
                     except Exception as e:   
+                        
                         return redirect('supervisor')
                 
                 if user.groups.filter(name = 'Student'):

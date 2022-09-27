@@ -128,6 +128,7 @@ def export_data(request):
     rows = Project.objects.all().values_list('id','title', 'supervisor')
     
     for row in rows:
+        print(row[0])
         row_num +=1
         for student in Student.objects.all():
             if student.project is not None and student.project.id == row[0]:
